@@ -17,7 +17,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  DeliveryVanIllustration,
+  DeliveryMapBackground,
   StepDeliverIllustration,
   StepEnjoyIllustration,
   StepOrderIllustration,
@@ -86,10 +86,10 @@ export default function MarketingHomePage() {
       <section className="border-b border-border bg-gradient-to-b from-accent/60 to-background">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-2 md:items-center md:px-6 md:py-24">
           <div className="flex flex-col gap-5">
-            <span className="w-fit rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold tracking-wide text-primary uppercase">
-              So einfach geht&apos;s
+            <span className="w-fit rounded-full border border-[var(--mg-accent-green-border)] bg-[var(--mg-accent-green-bg)] px-3 py-1 text-xs font-bold text-[var(--mg-accent-green)]">
+              Regional aus Kitzingen
             </span>
-            <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
+            <h1 className="text-4xl font-bold tracking-tighter text-foreground sm:text-5xl">
               Deine Lieblingsgetränke{" "}
               <span className="text-primary">zu dir nach Hause</span>
             </h1>
@@ -134,7 +134,7 @@ export default function MarketingHomePage() {
       </section>
 
       {/* Regional & Zuverlässig — the two things we want to lead with */}
-      <section className="border-b border-border bg-primary text-primary-foreground">
+      <section className="border-b border-border bg-gradient-to-br from-[#052f70] to-primary text-primary-foreground">
         <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-2 md:px-6 md:py-16">
           <div className="flex items-start gap-4">
             <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-white/15">
@@ -274,31 +274,27 @@ export default function MarketingHomePage() {
       {/* Liefergebiet */}
       <section
         id="liefergebiet"
-        className="scroll-mt-16 border-t border-border bg-white py-16 md:py-24"
+        className="relative isolate scroll-mt-16 overflow-hidden border-t border-border py-16 md:py-24"
       >
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 md:grid-cols-2 md:items-center md:px-6">
-          <div className="flex flex-col gap-4">
+        <DeliveryMapBackground className="absolute inset-0 -z-20 h-full w-full" />
+        {/* Fades to opaque only behind the centered text column, so the map
+            (and the delivery-radius circle in particular) stays clearly
+            visible in the left/right margins instead of being washed out
+            everywhere. */}
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,transparent_0%,var(--background)_38%,var(--background)_62%,transparent_100%)]" />
+        <div className="mx-auto max-w-6xl px-4 md:px-6">
+          <div className="mx-auto flex max-w-xl flex-col items-center gap-4 text-center">
             <h2 className="text-3xl font-bold tracking-tight text-foreground">
               Unser Liefergebiet
             </h2>
             <p className="text-muted-foreground">
-              Wir liefern in Kitzingen und der Umgebung — ob
+              Wir liefern im Umkreis von ca. 20&nbsp;km um Kitzingen — ob
               Privathaushalt, Firma, Verein oder Gastronomie.
             </p>
-            <div className="flex items-center gap-2 text-sm font-medium text-foreground">
+            <div className="flex items-center gap-2 rounded-full border border-border bg-white px-4 py-2 text-sm font-medium text-foreground shadow-sm">
               <MapPin className="size-4 text-primary" />
-              Kitzingen &amp; Umgebung
+              Kitzingen &amp; Umgebung — ca. 20 km Umkreis
             </div>
-          </div>
-          <div className="flex flex-col items-center gap-6">
-            <div className="relative mx-auto flex size-56 items-center justify-center rounded-full border-2 border-dashed border-primary/30 sm:size-72">
-              <div className="absolute size-36 rounded-full border-2 border-dashed border-primary/40 sm:size-48" />
-              <div className="flex flex-col items-center gap-1 rounded-full bg-primary p-4 text-primary-foreground shadow-sm">
-                <MapPin className="size-6" />
-                <span className="text-xs font-semibold">Kitzingen</span>
-              </div>
-            </div>
-            <DeliveryVanIllustration className="h-auto w-48 text-primary sm:w-56" />
           </div>
         </div>
       </section>

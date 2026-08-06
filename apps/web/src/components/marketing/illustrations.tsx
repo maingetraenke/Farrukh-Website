@@ -143,6 +143,80 @@ export function StepEnjoyIllustration(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
+// Abstract map impression for the Liefergebiet section background — city
+// blocks, a street grid, the Main river, and a bold dashed delivery-radius
+// circle around Kitzingen. Not a real map tile (avoids third-party map
+// licensing/ToS issues), designed to actually read as "a map" at a glance
+// rather than disappear under blur/overlay — keep contrast reasonably high.
+export function DeliveryMapBackground(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 1600 500"
+      preserveAspectRatio="xMidYMid slice"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <rect width="1600" height="500" fill="#dce9f8" />
+
+      {/* City blocks for an aerial-map feel */}
+      <g fill="#c9defa" stroke="#b3d0f2" strokeWidth="2">
+        <rect x="60" y="30" width="140" height="90" rx="4" />
+        <rect x="230" y="30" width="90" height="90" rx="4" />
+        <rect x="60" y="150" width="90" height="70" rx="4" />
+        <rect x="180" y="150" width="140" height="70" rx="4" />
+        <rect x="1360" y="40" width="120" height="80" rx="4" />
+        <rect x="1360" y="150" width="70" height="90" rx="4" />
+        <rect x="1460" y="150" width="90" height="90" rx="4" />
+        <rect x="1300" y="370" width="100" height="90" rx="4" />
+        <rect x="1420" y="360" width="130" height="70" rx="4" />
+        <rect x="80" y="360" width="110" height="100" rx="4" />
+        <rect x="220" y="380" width="80" height="80" rx="4" />
+      </g>
+
+      <g stroke="#9cc0ea" strokeWidth="5">
+        <path d="M0 60H1600" />
+        <path d="M0 140H1600" />
+        <path d="M0 260H1600" />
+        <path d="M0 340H1600" />
+        <path d="M0 430H1600" />
+        <path d="M120 0V500" />
+        <path d="M260 0V500" />
+        <path d="M420 0V500" />
+        <path d="M560 0V500" />
+        <path d="M720 0V500" />
+        <path d="M900 0V500" />
+        <path d="M1060 0V500" />
+        <path d="M1220 0V500" />
+        <path d="M1380 0V500" />
+        <path d="M1500 0V500" />
+      </g>
+      <g stroke="#89b3e4" strokeWidth="4">
+        <path d="M-40 20L500 480" />
+        <path d="M900 -20L1500 470" />
+      </g>
+
+      <path
+        d="M-50 380C200 340 350 420 560 360C800 290 950 380 1180 300C1380 235 1500 280 1650 220"
+        stroke="#5b93d6"
+        strokeWidth="30"
+        fill="none"
+        strokeLinecap="round"
+      />
+
+      <circle
+        cx="800"
+        cy="250"
+        r="300"
+        fill="none"
+        stroke="#0b5fa5"
+        strokeWidth="7"
+        strokeDasharray="20 14"
+      />
+      <circle cx="800" cy="250" r="13" fill="#0b5fa5" stroke="white" strokeWidth="5" />
+    </svg>
+  );
+}
+
 export function DeliveryVanIllustration(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg

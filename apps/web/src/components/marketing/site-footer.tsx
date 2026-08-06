@@ -1,6 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
-import { LogoMark } from "@/components/marketing/illustrations";
 
 export function SiteFooter() {
   return (
@@ -8,8 +8,14 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-4 py-12 sm:grid-cols-2 md:px-6 lg:grid-cols-4">
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-white/10">
-              <LogoMark className="size-4" />
+            <div className="flex size-9 items-center justify-center rounded-lg bg-white p-1">
+              <Image
+                src="/logo.png"
+                alt="MainGetränke"
+                width={28}
+                height={28}
+                className="size-7 object-contain"
+              />
             </div>
             <span className="font-bold">MainGetränke</span>
           </div>

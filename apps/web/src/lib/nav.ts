@@ -37,7 +37,10 @@ export const navItems: NavItem[] = [
     title: "Bestellungen",
     href: "/orders",
     icon: ClipboardList,
-    roles: ["ADMIN", "DISPOSITION", "LAGER", "BUCHHALTUNG"],
+    // Matches the order_inquiries RLS policy (order_inquiries_select_staff):
+    // LAGER has no visibility into customer contact/delivery data or
+    // pricing here, unlike the eventual Phase 2 picking-oriented order view.
+    roles: ["ADMIN", "DISPOSITION", "BUCHHALTUNG"],
   },
   {
     title: "Kunden",

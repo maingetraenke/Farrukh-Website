@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   AlertTriangle,
   ClipboardList,
@@ -14,36 +15,65 @@ import { Badge } from "@/components/ui/badge";
 import { KpiCard } from "@/components/dashboard/kpi-card";
 import { requireUser } from "@/lib/auth/session";
 import { createClient } from "@/lib/supabase/server";
+import { STATUS_LABELS } from "@/app/(app)/orders/inquiry-status-select";
 
 export default async function DashboardPage() {
   const user = await requireUser();
   const supabase = await createClient();
 
-  const [customers, products, suppliers, unpricedProducts, unsetDeposits] =
-    await Promise.all([
-      supabase
-        .from("customers")
-        .select("id", { count: "exact", head: true })
-        .eq("active", true),
-      supabase
-        .from("products")
-        .select("id", { count: "exact", head: true })
-        .eq("active", true),
-      supabase
-        .from("suppliers")
-        .select("id", { count: "exact", head: true })
-        .eq("active", true),
-      supabase
-        .from("products")
-        .select("id", { count: "exact", head: true })
-        .eq("active", true)
-        .is("tax_rate_percent", null),
-      supabase
-        .from("deposit_types")
-        .select("id", { count: "exact", head: true })
-        .eq("active", true)
-        .is("amount_cents", null),
-    ]);
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+
+  const canSeeOrders =
+    user.role === "ADMIN" ||
+    user.role === "DISPOSITION" ||
+    user.role === "BUCHHALTUNG";
+
+  const [
+    customers,
+    products,
+    suppliers,
+    unpricedProducts,
+    unsetDeposits,
+    ordersToday,
+    recentOrders,
+  ] = await Promise.all([
+    supabase
+      .from("customers")
+      .select("id", { count: "exact", head: true })
+      .eq("active", true),
+    supabase
+      .from("products")
+      .select("id", { count: "exact", head: true })
+      .eq("active", true),
+    supabase
+      .from("suppliers")
+      .select("id", { count: "exact", head: true })
+      .eq("active", true),
+    supabase
+      .from("products")
+      .select("id", { count: "exact", head: true })
+      .eq("active", true)
+      .is("tax_rate_percent", null),
+    supabase
+      .from("deposit_types")
+      .select("id", { count: "exact", head: true })
+      .eq("active", true)
+      .is("amount_cents", null),
+    canSeeOrders
+      ? supabase
+          .from("order_inquiries")
+          .select("id", { count: "exact", head: true })
+          .gte("created_at", todayStart.toISOString())
+      : Promise.resolve({ count: null }),
+    canSeeOrders
+      ? supabase
+          .from("order_inquiries")
+          .select("id, inquiry_number, customer_name, status, created_at")
+          .order("created_at", { ascending: false })
+          .limit(5)
+      : Promise.resolve({ data: null }),
+  ]);
 
   const warnings: string[] = [];
   if ((unpricedProducts.count ?? 0) > 0) {
@@ -71,9 +101,9 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           icon={ClipboardList}
-          label="Bestellungen heute"
-          value="–"
-          hint="Verfügbar ab Phase 2"
+          label="Bestellanfragen heute"
+          value={canSeeOrders ? String(ordersToday.count ?? 0) : "–"}
+          hint={canSeeOrders ? undefined : "Keine Berechtigung"}
         />
         <KpiCard
           icon={Route}
@@ -129,8 +159,37 @@ export default async function DashboardPage() {
           <CardHeader>
             <CardTitle className="text-base">Letzte Bestellungen</CardTitle>
           </CardHeader>
-          <CardContent className="text-muted-foreground text-sm">
-            Bestellverwaltung folgt in Phase 2.
+          <CardContent>
+            {!canSeeOrders ? (
+              <p className="text-muted-foreground text-sm">Keine Berechtigung.</p>
+            ) : !recentOrders.data || recentOrders.data.length === 0 ? (
+              <p className="text-muted-foreground text-sm">
+                Noch keine Bestellanfragen.
+              </p>
+            ) : (
+              <ul className="flex flex-col gap-2.5">
+                {recentOrders.data.map((order) => (
+                  <li key={order.id}>
+                    <Link
+                      href="/orders"
+                      className="flex items-center justify-between gap-3 text-sm hover:text-primary"
+                    >
+                      <span className="flex flex-col">
+                        <span className="font-medium text-foreground">
+                          {order.customer_name}
+                        </span>
+                        <span className="text-muted-foreground text-xs">
+                          {order.inquiry_number}
+                        </span>
+                      </span>
+                      <Badge variant="outline" className="shrink-0">
+                        {STATUS_LABELS[order.status]}
+                      </Badge>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
           </CardContent>
         </Card>
         <Card>

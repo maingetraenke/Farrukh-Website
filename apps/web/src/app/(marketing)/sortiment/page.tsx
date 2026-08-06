@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Beer, CupSoda, GlassWater, PackageSearch, Wine } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { AddToCartButton } from "@/components/marketing/add-to-cart-button";
@@ -77,21 +78,33 @@ export default async function SortimentPage() {
                 </div>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   {items.map((product) => (
-                    <Card key={product.id} className="shadow-sm">
+                    <Card
+                      key={product.id}
+                      className="shadow-sm transition-shadow hover:shadow-md"
+                    >
+                      {product.image_url ? (
+                        <Image
+                          src={product.image_url}
+                          alt={product.brand}
+                          width={400}
+                          height={160}
+                          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                          className="h-40 w-full bg-white object-contain p-4"
+                        />
+                      ) : (
+                        <div className="flex h-40 w-full shrink-0 items-center justify-center bg-accent">
+                          <Icon className="text-primary size-12" />
+                        </div>
+                      )}
                       <CardContent className="flex flex-col gap-3">
-                        <div className="flex items-start gap-3">
-                          <div className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-accent text-primary">
-                            <Icon className="size-5" />
-                          </div>
-                          <div className="flex flex-col">
-                            <span className="font-semibold text-foreground">
-                              {product.brand}
-                              {product.variant ? ` ${product.variant}` : ""}
-                            </span>
-                            <span className="text-muted-foreground text-xs">
-                              {formatGebinde(product)}
-                            </span>
-                          </div>
+                        <div className="flex flex-col">
+                          <span className="font-semibold text-foreground">
+                            {product.brand}
+                            {product.variant ? ` ${product.variant}` : ""}
+                          </span>
+                          <span className="text-muted-foreground text-xs">
+                            {formatGebinde(product)}
+                          </span>
                         </div>
                         <AddToCartButton
                           productId={product.id}

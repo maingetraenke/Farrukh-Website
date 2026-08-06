@@ -1,8 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Droplet } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -31,8 +31,14 @@ export function AppSidebar({
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <div className="flex items-center gap-2 px-2 py-1.5">
-          <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-            <Droplet className="size-4" />
+          <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-white p-1">
+            <Image
+              src="/logo.png"
+              alt="MainGetränke"
+              width={24}
+              height={24}
+              className="size-6 object-contain"
+            />
           </div>
           <div className="flex flex-col overflow-hidden group-data-[collapsible=icon]:hidden">
             <span className="truncate text-sm font-semibold text-sidebar-foreground">

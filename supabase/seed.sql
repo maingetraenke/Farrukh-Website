@@ -132,6 +132,133 @@ update public.products
 set supplier_id = (select id from public.suppliers where organization_id = '00000000-0000-0000-0000-000000000001' and name = 'Volpert')
 where organization_id = '00000000-0000-0000-0000-000000000001' and category = 'BIER';
 
+-- Product images for admin review before launch. Redone after the first
+-- pass was rejected for containing lifestyle/review-style photos (hand
+-- holding a bottle, bar-counter shots, angled can photos) instead of clean
+-- product packshots. Every image below is a genuine isolated e-commerce/
+-- press packshot: plain white (or near-white) background, no hands, no
+-- bars, no outdoor scenes. Sourced mostly from manufacturers' own official
+-- product/press pages (Coca-Cola, Paulaner, Krombacher, Erdinger,
+-- Distelhäuser, Würzburger Hofbräu, Gerolsteiner, Bad Brückenauer all
+-- publish their own bottle packshots) and, for a few brands, from German
+-- beverage retailers' (Globus, getraenkedienst.com) own product photos,
+-- cropped to isolate a single bottle where the source photo showed a case.
+-- Full source/license table: docs/product-images-overview.md. One image is
+-- reused across bottle-size variants of the same brand/flavor. Every
+-- product from the previous pass's "not found" list now has a genuine
+-- image (Gerolsteiner, Alasia PUR/Medium/Spritzig, Bad Brückenauer,
+-- Paulaner Spezi Zero, Distelhäuser Pils) — none were left out this time.
+update public.products
+set image_url = '/products/gerolsteiner.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Gerolsteiner';
+
+update public.products
+set image_url = '/products/alasia-pur.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Alasia PUR';
+
+update public.products
+set image_url = '/products/alasia-medium.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Alasia' and variant = 'Medium';
+
+update public.products
+set image_url = '/products/alasia-spritzig.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Alasia' and variant = 'Spritzig';
+
+update public.products
+set image_url = '/products/franken-brunnen.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Franken Brunnen';
+
+update public.products
+set image_url = '/products/bad-brueckenauer.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Bad Brückenauer';
+
+update public.products
+set image_url = '/products/coca-cola-original.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Coca-Cola' and variant = 'Original';
+
+update public.products
+set image_url = '/products/coca-cola-zero.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Coca-Cola' and variant = 'Zero';
+
+update public.products
+set image_url = '/products/coca-cola-light.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Coca-Cola' and variant = 'Light';
+
+update public.products
+set image_url = '/products/fanta.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Fanta';
+
+update public.products
+set image_url = '/products/sprite.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Sprite';
+
+update public.products
+set image_url = '/products/mezzo-mix.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Mezzo Mix';
+
+update public.products
+set image_url = '/products/paulaner-spezi.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Paulaner Spezi' and variant is null;
+
+update public.products
+set image_url = '/products/paulaner-spezi-zero.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Paulaner Spezi' and variant = 'Zero';
+
+update public.products
+set image_url = '/products/augustiner-hell.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Augustiner' and variant = 'Hell';
+
+update public.products
+set image_url = '/products/augustiner-edelstoff.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Augustiner' and variant = 'Edelstoff';
+
+update public.products
+set image_url = '/products/paulaner-helles.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Paulaner' and variant = 'Helles';
+
+update public.products
+set image_url = '/products/paulaner-hefeweissbier.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Paulaner' and variant = 'Hefe-Weißbier';
+
+update public.products
+set image_url = '/products/erdinger-weissbier.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Erdinger' and variant = 'Weißbier';
+
+update public.products
+set image_url = '/products/krombacher-pils.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Krombacher' and variant = 'Pils';
+
+update public.products
+set image_url = '/products/bitburger-pils.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Bitburger' and variant = 'Pils';
+
+update public.products
+set image_url = '/products/distelhaeuser-pils.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Distelhäuser' and variant = 'Pils';
+
+update public.products
+set image_url = '/products/wuerzburger-hofbraeu-pils.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and brand = 'Würzburger Hofbräu' and variant = 'Pils';
+
+-- Wein & Saft: brand is a placeholder supplier name shared by both wine (or
+-- both juice) rows, so match on the product name instead to keep each
+-- UPDATE scoped to one row. All three images are unbranded, label-free
+-- studio packshots from a glass-bottle manufacturer's own product catalog
+-- (Wiegand-Glas) — appropriate since the supplier names in this section are
+-- explicitly placeholders, not real wineries/Keltereien, so no real brand's
+-- labeled bottle should be shown.
+update public.products
+set image_url = '/products/fraenkischer-wein.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and name in ('Fränkischer Müller-Thurgau', 'Fränkischer Silvaner');
+
+update public.products
+set image_url = '/products/apfelschorle.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and name = 'Apfelschorle';
+
+update public.products
+set image_url = '/products/orangensaft.jpg'
+where organization_id = '00000000-0000-0000-0000-000000000001' and name = 'Orangensaft';
+
 -- --- Bootstrap the first admin user -----------------------------------
 -- After creating your first user via Supabase Auth, run:
 --
