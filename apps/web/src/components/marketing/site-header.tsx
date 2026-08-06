@@ -11,9 +11,10 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { LogoMark } from "@/components/marketing/illustrations";
+import { CartButton } from "@/components/marketing/cart-button";
 
 const navLinks = [
-  { href: "/#sortiment", label: "Sortiment" },
+  { href: "/sortiment", label: "Sortiment" },
   { href: "/#ablauf", label: "So funktioniert's" },
   { href: "/#liefergebiet", label: "Liefergebiet" },
   { href: "/#kontakt", label: "Kontakt" },
@@ -59,6 +60,7 @@ export function SiteHeader() {
           <Button asChild size="lg" className="hidden h-9 sm:inline-flex">
             <Link href="/#kontakt">Kontakt aufnehmen</Link>
           </Button>
+          <CartButton />
           <Button
             variant="outline"
             size="icon"

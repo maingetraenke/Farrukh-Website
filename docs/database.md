@@ -51,6 +51,8 @@ access — there is no separate "unassigned user" code path to maintain.
 | `product_prices` | Append-only price history, see [Pricing](#pricing). |
 | `warehouses` / `inventory_balances` / `inventory_movements` | See [Inventory](#inventory). |
 | `audit_logs` | Append-only; see architecture.md. |
+| `public_products` (view) | Anonymous-readable subset of `products` (no price/stock/supplier columns) for the marketing site's Sortiment/cart pages — see [Public marketing site](#public-marketing-site). |
+| `order_inquiries` / `contact_messages` | Public lead capture from the marketing site's cart and contact form — see [Public marketing site](#public-marketing-site). |
 
 ## Numbering
 
@@ -128,6 +130,36 @@ domain service that posts `RESERVATION` movements (Phase 2), which checks
 `available >= requested` unless the caller is an admin explicitly
 overriding. This is a deliberate app-layer enforcement point, documented
 here so it isn't "discovered" as a missing DB constraint later.
+
+## Public marketing site
+
+The marketing site (`apps/web/src/app/(marketing)`) is anonymous — no
+Supabase Auth session, so `current_org_id()` is null and every org-scoped
+RLS policy above denies it by design. Two narrow exceptions:
+
+- **`public_products`** — a `CREATE VIEW` over `products` selecting only
+  anonymous-safe columns (name, brand, category, gebinde, image — no
+  price, stock levels, EAN, or supplier). Views run with the *owner's*
+  privileges by default (not the caller's), so this view bypasses
+  `products`' RLS by construction; the safety boundary is which columns
+  the view selects, not a grant on the base table. See
+  `20260806090100_public_product_catalog_view.sql`.
+- **`order_inquiries`** / **`contact_messages`** — the cart checkout and
+  contact form both insert here. RLS grants `INSERT` broadly (best-effort
+  `CHECK` constraints only — real spam/rate-limit protection is Release
+  1.1 per spec) and restricts `SELECT`/`UPDATE` to `DISPOSITION`/
+  `BUCHHALTUNG`/`ADMIN`. See `20260806090000_public_leads.sql`.
+
+An inquiry is a **lead**, not a real order: no price is computed or
+promised (no real sale prices exist yet — see [Pricing](#pricing)), and
+`items` is a denormalized `jsonb` snapshot rather than real `order_items`
+rows, since there's no priced/reserved order behind it. A staff member
+turns a promising inquiry into a real order manually until the Phase 2
+order pipeline exists.
+
+Both public Server Actions (`apps/web/src/lib/leads/actions.ts`) attach
+`organization_id` from `NEXT_PUBLIC_DEFAULT_ORG_ID` (env var) rather than
+from a session, since there is no session to derive it from.
 
 ## Regenerating TypeScript types
 

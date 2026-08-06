@@ -40,10 +40,25 @@ export type ProductCategory =
   | "SOFTDRINKS"
   | "SONSTIGES";
 
+export type LeadStatus = "NEW" | "CONTACTED" | "CONVERTED" | "DECLINED";
+
+export interface CartItemSnapshot {
+  product_id: string;
+  name: string;
+  brand: string;
+  gebinde: string;
+  quantity: number;
+}
+
 interface Table<Row, Insert, Update = Partial<Insert>> {
   Row: Row;
   Insert: Insert;
   Update: Update;
+  Relationships: [];
+}
+
+interface View<Row> {
+  Row: Row;
   Relationships: [];
 }
 
@@ -364,9 +379,69 @@ export interface Database {
           after?: unknown;
         }
       >;
+      order_inquiries: Table<
+        {
+          id: string;
+          organization_id: string;
+          customer_name: string;
+          email: string;
+          phone: string | null;
+          delivery_street: string | null;
+          delivery_postal_code: string | null;
+          delivery_city: string | null;
+          requested_date: string | null;
+          items: CartItemSnapshot[];
+          notes: string | null;
+          status: LeadStatus;
+          created_at: string;
+        },
+        {
+          organization_id: string;
+          customer_name: string;
+          email: string;
+          phone?: string | null;
+          delivery_street?: string | null;
+          delivery_postal_code?: string | null;
+          delivery_city?: string | null;
+          requested_date?: string | null;
+          items: CartItemSnapshot[];
+          notes?: string | null;
+        }
+      >;
+      contact_messages: Table<
+        {
+          id: string;
+          organization_id: string;
+          name: string;
+          email: string;
+          phone: string | null;
+          message: string;
+          status: LeadStatus;
+          created_at: string;
+        },
+        {
+          organization_id: string;
+          name: string;
+          email: string;
+          phone?: string | null;
+          message: string;
+        }
+      >;
     };
     Views: {
-      [_ in never]: never;
+      public_products: View<{
+        id: string;
+        organization_id: string;
+        article_number: string;
+        name: string;
+        brand: string;
+        category: ProductCategory;
+        variant: string | null;
+        bottles_per_case: number;
+        bottle_volume_ml: number;
+        bottle_material: BottleMaterial;
+        image_url: string | null;
+      }>;
     };
     Functions: {
       [_ in never]: never;
