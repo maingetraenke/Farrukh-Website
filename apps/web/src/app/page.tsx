@@ -1,19 +1,15 @@
 import type { Metadata } from "next";
 import {
   Beer,
-  ClipboardCheck,
   Clock,
   CupSoda,
   GlassWater,
   Mail,
   MapPin,
-  PackageCheck,
   PackageSearch,
   Phone,
   Recycle,
   ShieldCheck,
-  ShoppingCart,
-  Truck,
   Users,
   Wine,
 } from "lucide-react";
@@ -21,6 +17,13 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { SiteHeader } from "@/components/marketing/site-header";
 import { SiteFooter } from "@/components/marketing/site-footer";
+import {
+  DeliveryVanIllustration,
+  StepDeliverIllustration,
+  StepEnjoyIllustration,
+  StepOrderIllustration,
+  StepSelectIllustration,
+} from "@/components/marketing/illustrations";
 
 export const metadata: Metadata = {
   title: "MainGetränke — Dein Getränkeservice aus der Region",
@@ -30,22 +33,22 @@ export const metadata: Metadata = {
 
 const steps = [
   {
-    icon: ShoppingCart,
+    icon: StepSelectIllustration,
     title: "Getränke auswählen",
     text: "Sag uns, was du brauchst — unser Sortiment reicht von Wasser über Bier bis Wein & Sekt.",
   },
   {
-    icon: ClipboardCheck,
+    icon: StepOrderIllustration,
     title: "Bestellung anfragen",
     text: "Per Telefon oder E-Mail: Lieferadresse und Wunschtermin angeben, fertig.",
   },
   {
-    icon: Truck,
+    icon: StepDeliverIllustration,
     title: "Wir liefern",
     text: "Unser Team packt deine Bestellung und liefert sie zuverlässig zu dir.",
   },
   {
-    icon: PackageCheck,
+    icon: StepEnjoyIllustration,
     title: "Du genießt",
     text: "Deine Getränke kommen bequem und sicher direkt vor deine Tür.",
   },
@@ -282,12 +285,15 @@ export default function MarketingHomePage() {
                 Kitzingen &amp; Umgebung
               </div>
             </div>
-            <div className="relative mx-auto flex size-56 items-center justify-center rounded-full border-2 border-dashed border-primary/30 sm:size-72">
-              <div className="absolute size-36 rounded-full border-2 border-dashed border-primary/40 sm:size-48" />
-              <div className="flex flex-col items-center gap-1 rounded-full bg-primary p-4 text-primary-foreground shadow-sm">
-                <MapPin className="size-6" />
-                <span className="text-xs font-semibold">Kitzingen</span>
+            <div className="flex flex-col items-center gap-6">
+              <div className="relative mx-auto flex size-56 items-center justify-center rounded-full border-2 border-dashed border-primary/30 sm:size-72">
+                <div className="absolute size-36 rounded-full border-2 border-dashed border-primary/40 sm:size-48" />
+                <div className="flex flex-col items-center gap-1 rounded-full bg-primary p-4 text-primary-foreground shadow-sm">
+                  <MapPin className="size-6" />
+                  <span className="text-xs font-semibold">Kitzingen</span>
+                </div>
               </div>
+              <DeliveryVanIllustration className="h-auto w-48 text-primary sm:w-56" />
             </div>
           </div>
         </section>

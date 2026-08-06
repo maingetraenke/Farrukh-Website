@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Droplet, Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
+import { LogoMark } from "@/components/marketing/illustrations";
 
 export function SiteFooter() {
   return (
@@ -8,7 +9,7 @@ export function SiteFooter() {
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-2">
             <div className="flex size-8 items-center justify-center rounded-lg bg-white/10">
-              <Droplet className="size-4" />
+              <LogoMark className="size-4" />
             </div>
             <span className="font-bold">MainGetränke</span>
           </div>

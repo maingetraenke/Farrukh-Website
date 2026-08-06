@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Droplet, MapPin, Menu } from "lucide-react";
+import { MapPin, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -10,6 +10,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { LogoMark } from "@/components/marketing/illustrations";
 
 const navLinks = [
   { href: "/#sortiment", label: "Sortiment" },
@@ -26,7 +27,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2">
           <div className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Droplet className="size-5" />
+            <LogoMark className="size-5" />
           </div>
           <div className="flex flex-col leading-tight">
             <span className="text-base font-bold text-foreground">
