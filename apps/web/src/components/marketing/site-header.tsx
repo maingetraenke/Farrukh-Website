@@ -31,6 +31,11 @@ export function SiteHeader() {
           enough to fully contain the logo; the soft fade below (rather than
           a hard border) is what actually transitions into the page. */}
       <div className="relative bg-white pb-[68px]">
+        {/* Full-bleed divider at the logo's vertical midpoint, separating
+            the nav row from the fade below. Placed before the row in DOM
+            order (and the logo has no z-index of its own) so the row —
+            logo included — naturally paints on top of it. */}
+        <div className="absolute inset-x-0 top-[74px] h-px bg-border" />
         <div className="mx-auto flex h-20 max-w-6xl items-center gap-4 px-4 md:px-6">
           <Link href="/" className="flex min-w-0 items-center">
             {/* Reserves normal-flow space for the logo; the actual image is
@@ -50,7 +55,7 @@ export function SiteHeader() {
             </span>
           </Link>
 
-          <nav className="ml-4 hidden items-center gap-6 whitespace-nowrap md:flex">
+          <nav className="ml-4 hidden translate-y-[34px] items-center gap-6 whitespace-nowrap md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -62,7 +67,7 @@ export function SiteHeader() {
             ))}
           </nav>
 
-          <div className="ml-auto flex items-center gap-2">
+          <div className="ml-auto flex translate-y-[34px] items-center gap-2">
             <div className="hidden items-center gap-1.5 text-nowrap rounded-full border border-border bg-muted px-3 py-1.5 text-xs font-medium whitespace-nowrap text-muted-foreground sm:flex">
               <MapPin className="size-3.5 shrink-0 text-primary" />
               Kitzingen &amp; Umgebung
