@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import {
   Beer,
@@ -83,20 +84,29 @@ export default function MarketingHomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="border-b border-border bg-gradient-to-b from-accent/60 to-background">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-2 md:items-center md:px-6 md:py-24">
+      <section className="relative isolate overflow-hidden border-b border-border">
+        <Image
+          src="/hero-delivery.jpg"
+          alt="Lieferfahrer lädt Getränkekisten in den MainGetränke-Lieferwagen"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#052f70]/75 via-[#052f70]/55 to-[#052f70]/20" />
+        <div className="relative z-10 mx-auto grid max-w-6xl gap-10 px-4 py-16 md:grid-cols-2 md:items-center md:px-6 md:py-24">
           <div className="flex flex-col gap-5">
             <span className="w-fit rounded-full border border-[var(--mg-accent-green-border)] bg-[var(--mg-accent-green-bg)] px-3 py-1 text-xs font-bold text-[var(--mg-accent-green)]">
               Regional aus Kitzingen
             </span>
-            <h1 className="text-4xl font-bold tracking-tighter text-foreground sm:text-5xl">
+            <h1 className="text-4xl font-bold tracking-tighter text-white sm:text-5xl">
               Deine Lieblingsgetränke{" "}
-              <span className="text-primary">zu dir nach Hause</span>
+              <span className="text-sky-300">zu dir nach Hause</span>
             </h1>
-            <p className="max-w-md text-base text-muted-foreground">
-              Wir sind ein <strong className="text-foreground">regionaler</strong>{" "}
+            <p className="max-w-md text-base text-white/80">
+              Wir sind ein <strong className="text-white">regionaler</strong>{" "}
               Getränkelieferdienst aus Kitzingen. Sag uns, was du brauchst — wir
-              liefern es dir <strong className="text-foreground">zuverlässig</strong>{" "}
+              liefern es dir <strong className="text-white">zuverlässig</strong>{" "}
               nach Hause, kastenweise.
             </p>
             <div className="flex flex-wrap gap-3">
@@ -107,7 +117,7 @@ export default function MarketingHomePage() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="h-11 px-6 text-base"
+                className="h-11 border-white/40 bg-white/10 px-6 text-base text-white hover:bg-white/20 hover:text-white"
               >
                 <Link href="/#kontakt">Kontakt aufnehmen</Link>
               </Button>

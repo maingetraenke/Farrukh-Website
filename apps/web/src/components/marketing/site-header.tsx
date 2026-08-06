@@ -31,11 +31,13 @@ export function SiteHeader() {
           enough to fully contain the logo; the soft fade below (rather than
           a hard border) is what actually transitions into the page. */}
       <div className="relative bg-white pb-[68px]">
-        {/* Full-bleed divider at the logo's vertical midpoint, separating
-            the nav row from the fade below. Placed before the row in DOM
-            order (and the logo has no z-index of its own) so the row —
-            logo included — naturally paints on top of it. */}
-        <div className="absolute inset-x-0 top-[74px] h-px bg-border" />
+        {/* Divider at the logo's vertical midpoint, only in the outer
+            gutters beyond the max-w-6xl content row (stops exactly at the
+            row's edge, so the gap to the logo/cart icon is just the row's
+            own horizontal padding — symmetric on both sides). Nothing
+            behind the nav/buttons themselves. */}
+        <div className="pointer-events-none absolute top-[74px] left-0 h-px w-[max(0px,calc(50%-36rem))] bg-border" />
+        <div className="pointer-events-none absolute top-[74px] right-0 h-px w-[max(0px,calc(50%-36rem))] bg-border" />
         <div className="mx-auto flex h-20 max-w-6xl items-center gap-4 px-4 md:px-6">
           <Link href="/" className="flex min-w-0 items-center">
             {/* Reserves normal-flow space for the logo; the actual image is
@@ -87,10 +89,6 @@ export function SiteHeader() {
             </Button>
           </div>
         </div>
-
-        {/* Soft dissolve instead of a hard border-b — this is the actual
-            transition into the page background the logo crosses over. */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-9 translate-y-full bg-gradient-to-b from-white to-transparent" />
       </div>
 
       <Sheet open={open} onOpenChange={setOpen}>
