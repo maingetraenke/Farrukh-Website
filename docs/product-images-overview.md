@@ -134,3 +134,97 @@ markenneutrale Flaschenform) gedacht sind.
 - Alle Bilder wurden vor der Übernahme visuell (nicht nur anhand von
   Dateinamen/Beschreibungen) auf einen echten weißen Hintergrund ohne
   Personen, Möbel oder Außenkontext geprüft.
+
+## Dritter Anlauf — offizielle Sortimentsliste, 2026-08-10
+
+Bilder für die 74 Artikel der neuen offiziellen Preisliste (siehe
+`supabase/migrations/20260810120200_official_catalog_2026_08.sql`), soweit
+noch kein Bild vorhanden war. Strengere Vorgabe als in Runde 2: **jedes
+Bild muss zusätzlich exakt zum angegebenen Gebinde passen** (z.B. 0,7L
+Glas vs. 1,0L PET derselben Marke/Sorte bekommen unterschiedliche Bilder,
+kein Wiederverwenden über Gebinde hinweg wie in Runde 2). Jedes
+Kandidatenbild wurde vor der Übernahme visuell geprüft.
+
+Quellen: bevorzugt offizielle Herstellerseiten (badbrueckenauer.de/downloads,
+blackforest-still.de, bayla.de, paulaner.de, bitburger.com); wo dort kein
+Gebinde-exaktes Packshot auffindbar war, freigestellte Einzelprodukt-
+bzw. Kistenfotos von Fachhändlern (expressdrinks.de, getraenkedienst.com,
+getraenkeonline.shop, aktionspreis.de). Ein offizielles Bitburger-Bild
+(Radler Naturtrüb) wurde verworfen, weil es die Dose statt der bestellten
+Glasflasche zeigte — stattdessen ein Gebinde-korrektes, aber niedriger
+aufgelöstes Händlerbild verwendet (siehe Tabelle, MG-A-00097).
+
+**53 von 63 möglichen Artikeln** haben ein Bild bekommen. **10 offene
+Lücken**, weil keine Quelle ein zweifelsfrei passendes, Gebinde-exaktes
+offizielles Produktfoto lieferte — bewusst ohne Bild gelassen statt ein
+falsches/generisches Bild zu erzwingen:
+
+- **Bayla (8):** Apfel-Kirsch Nektar 1L (aktuelles Sortiment hat nur noch
+  "Apfel-Kirsch-Zitrone", ein anderes 3-Frucht-Produkt), Wellness
+  Blutorange 1L (aktuelles Sortiment hat nur "ACE Blutorange", vermutlich
+  aber nicht dasselbe Produkt), Vollwert Apfel 1L (einziges Kandidatenbild
+  zeigt eine Hand, die die Flasche hält — laut Vorgabe/früherer
+  Betriebs-Ablehnung nicht zulässig), Apfel klar 0,2L, Johannisbeer 0,2L,
+  Johannisbeer 1L, Orange 0,2L — für diese vier "-klein"/1L-Varianten
+  fanden sich auf bayla.de nur Marketing-/Slogan-Grafiken statt
+  Produktfotos.
+- **Beck's (2):** Gold 20×0,5L Glas, Blue Lemon 0,0% 24×0,33L Glas — bei
+  keinem der geprüften Fachhändler als eigene Produktseite mit Bild
+  auffindbar (Blue Lemon 0,0% ist evtl. noch nicht breit gelistet).
+
+| Artikel-Nr. | Bilddatei | Quelle |
+|---|---|---|
+
+| MG-A-00040 | `alasia-medium-07l-glas.jpg` | [https://getraenkeonline.shop/wasser/medium/398/alasia-medium-12x0-7l](https://getraenkeonline.shop/wasser/medium/398/alasia-medium-12x0-7l) |
+| MG-A-00041 | `franken-brunnen-spritzig-07l-glas.jpg` | [https://www.getraenkedienst.com/wasser/spritzig-viel-kohlensaeure/franken-brunnen-hochstein-spritzig-12-x-0-7l](https://www.getraenkedienst.com/wasser/spritzig-viel-kohlensaeure/franken-brunnen-hochstein-spritzig-12-x-0-7l) |
+| MG-A-00042 | `franken-brunnen-sanft-07l-glas.jpg` | [https://www.getraenkedienst.com/wasser/medium-wenig-kohlensaeure/franken-brunnen-sanft-12-x-0-75l](https://www.getraenkedienst.com/wasser/medium-wenig-kohlensaeure/franken-brunnen-sanft-12-x-0-75l) |
+| MG-A-00043 | `franken-brunnen-medium-07l-glas.png` | [https://www.getraenkedienst.com/wasser/medium/franken-brunnen-medium-12-x-0-75l](https://www.getraenkedienst.com/wasser/medium/franken-brunnen-medium-12-x-0-75l) |
+| MG-A-00044 | `franken-brunnen-naturell-07l-glas.jpg` | [https://www.getraenkedienst.com/wasser/still-ohne-kohlensaeure/franken-brunnen-naturell-12-x-0-7l](https://www.getraenkedienst.com/wasser/still-ohne-kohlensaeure/franken-brunnen-naturell-12-x-0-7l) |
+| MG-A-00045 | `franken-brunnen-spritzig-10l-pet.jpg` | [https://expressdrinks.de/wasser/spritzig/4549/franken-brunnen-mineralwasser-spritzig-12x1-0l-pet](https://expressdrinks.de/wasser/spritzig/4549/franken-brunnen-mineralwasser-spritzig-12x1-0l-pet) |
+| MG-A-00046 | `franken-brunnen-sanft-10l-pet.png` | [https://www.getraenkedienst.com/wasser/medium-wenig-kohlensaeure/franken-brunnen-sanft-12-x-1l](https://www.getraenkedienst.com/wasser/medium-wenig-kohlensaeure/franken-brunnen-sanft-12-x-1l) |
+| MG-A-00047 | `franken-brunnen-medium-10l-pet.jpg` | [https://expressdrinks.de/wasser/medium/4551/franken-brunnen-mineralwasser-medium-12x1-0l-pet](https://expressdrinks.de/wasser/medium/4551/franken-brunnen-mineralwasser-medium-12x1-0l-pet) |
+| MG-A-00048 | `franken-brunnen-naturell-10l-pet.jpg` | [https://expressdrinks.de/wasser/still-naturell/4552/franken-brunnen-mineralwasser-naturell-12x1-0l-pet](https://expressdrinks.de/wasser/still-naturell/4552/franken-brunnen-mineralwasser-naturell-12x1-0l-pet) |
+| MG-A-00049 | `bad-brueckenauer-spritzig-07l-glas.webp` | [https://www.badbrueckenauer.de/downloads/flaschen/](https://www.badbrueckenauer.de/downloads/flaschen/) |
+| MG-A-00050 | `bad-brueckenauer-medium-07l-glas.webp` | [https://www.badbrueckenauer.de/downloads/flaschen/](https://www.badbrueckenauer.de/downloads/flaschen/) |
+| MG-A-00051 | `bad-brueckenauer-naturell-07l-glas.webp` | [https://www.badbrueckenauer.de/downloads/flaschen/](https://www.badbrueckenauer.de/downloads/flaschen/) |
+| MG-A-00052 | `bad-brueckenauer-spritzig-10l-pet.webp` | [https://www.badbrueckenauer.de/downloads/flaschen/](https://www.badbrueckenauer.de/downloads/flaschen/) |
+| MG-A-00053 | `bad-brueckenauer-medium-10l-pet.webp` | [https://www.badbrueckenauer.de/downloads/flaschen/](https://www.badbrueckenauer.de/downloads/flaschen/) |
+| MG-A-00054 | `bad-brueckenauer-naturell-10l-pet.webp` | [https://www.badbrueckenauer.de/downloads/flaschen/](https://www.badbrueckenauer.de/downloads/flaschen/) |
+| MG-A-00055 | `gerolsteiner-spritzig.jpg` | [https://www.getraenkedienst.com/wasser/spritzig-viel-kohlensaeure/gerolsteiner-sprudel-12-x-1l](https://www.getraenkedienst.com/wasser/spritzig-viel-kohlensaeure/gerolsteiner-sprudel-12-x-1l) |
+| MG-A-00056 | `gerolsteiner-medium.jpg` | [https://expressdrinks.de/wasser/medium/4657/gerolsteiner-mineralwasser-medium-12x1-0-pet](https://expressdrinks.de/wasser/medium/4657/gerolsteiner-mineralwasser-medium-12x1-0-pet) |
+| MG-A-00057 | `gerolsteiner-naturell.jpg` | [https://expressdrinks.de/wasser/still-naturell/4656/gerolsteiner-mineralwasser-naturell-12x1-0-pet](https://expressdrinks.de/wasser/still-naturell/4656/gerolsteiner-mineralwasser-naturell-12x1-0-pet) |
+| MG-A-00058 | `black-forest-spritzig-07l-glas.png` | [https://www.blackforest-still.de/produkte/black-forest-spritzig.html](https://www.blackforest-still.de/produkte/black-forest-spritzig.html) |
+| MG-A-00059 | `black-forest-feinperlig-07l-glas.png` | [https://www.blackforest-still.de/produkte/fein-perlend.html](https://www.blackforest-still.de/produkte/fein-perlend.html) |
+| MG-A-00060 | `black-forest-still-07l-glas.png` | [https://www.blackforest-still.de/produkte/black-forest-still.html](https://www.blackforest-still.de/produkte/black-forest-still.html) |
+| MG-A-00061 | `black-forest-still-05l-pet.png` | [https://www.blackforest-still.de/produkte/black-forest-still.html](https://www.blackforest-still.de/produkte/black-forest-still.html) |
+| MG-A-00062 | `bayla-sauerkirsch-1l.webp` | [https://bayla.de/sauerkirsch/](https://bayla.de/sauerkirsch/) |
+| MG-A-00064 | `bayla-maracuja-1l.webp` | [https://bayla.de/maracuja/](https://bayla.de/maracuja/) |
+| MG-A-00065 | `bayla-banane-1l.webp` | [https://bayla.de/banane/](https://bayla.de/banane/) |
+| MG-A-00067 | `bayla-orange-1l.webp` | [https://bayla.de/orangensaft/](https://bayla.de/orangensaft/) |
+| MG-A-00070 | `bayla-multivitamin-1l.webp` | [https://bayla.de/multi-mehrfrucht/](https://bayla.de/multi-mehrfrucht/) |
+| MG-A-00071 | `bayla-traube-direktsaft-1l.webp` | [https://bayla.de/traube/](https://bayla.de/traube/) |
+| MG-A-00073 | `bayla-ananas-1l.webp` | [https://bayla.de/ananas/](https://bayla.de/ananas/) |
+| MG-A-00077 | `bayla-traube-rot-02l.webp` | [https://bayla.de/traube-klein/](https://bayla.de/traube-klein/) |
+| MG-A-00078 | `coca-cola-24x033l-glas.png` | [https://expressdrinks.de/limo-schorlen/cola/373/coca-cola-24x0-33l](https://expressdrinks.de/limo-schorlen/cola/373/coca-cola-24x0-33l) |
+| MG-A-00080 | `paulaner-spezi-24x033l-glas.png` | [https://www.paulaner.de/produkte/spezi/spezi/](https://www.paulaner.de/produkte/spezi/spezi/) |
+| MG-A-00081 | `paulaner-cola-24x033l-glas.png` | [https://www.paulaner.de/produkte/cola/cola](https://www.paulaner.de/produkte/cola/cola) |
+| MG-A-00082 | `paulaner-limo-zitrone-24x033l-glas.png` | [https://www.paulaner.de/produkte/limo/paulaner-limo-zitrone/](https://www.paulaner.de/produkte/limo/paulaner-limo-zitrone/) |
+| MG-A-00083 | `paulaner-limo-orange-24x033l-glas.png` | [https://www.paulaner.de/produkte/limo/limo/](https://www.paulaner.de/produkte/limo/limo/) |
+| MG-A-00084 | `augustiner-hell-24x033l-glas.jpg` | [https://expressdrinks.de/bier/helles/2519/augustiner-hell-24x0-33l](https://expressdrinks.de/bier/helles/2519/augustiner-hell-24x0-33l) |
+| MG-A-00085 | `augustiner-dunkel-20x05l-glas.jpg` | [https://expressdrinks.de/bier/spezial-biere/2851/augustiner-dunkel-20x0-5l](https://expressdrinks.de/bier/spezial-biere/2851/augustiner-dunkel-20x0-5l) |
+| MG-A-00086 | `augustiner-alkoholfrei-20x05l-glas.jpg` | [https://expressdrinks.de/bier/alkoholfrei/4464/augustiner-hell-alkoholfrei-20x0-5l](https://expressdrinks.de/bier/alkoholfrei/4464/augustiner-hell-alkoholfrei-20x0-5l) |
+| MG-A-00087 | `becks-pils-20x05l-glas.jpg` | [https://www.getraenkedienst.com/bier/pils/becks-pils-20-x-0-5l](https://www.getraenkedienst.com/bier/pils/becks-pils-20-x-0-5l) |
+| MG-A-00089 | `becks-blue-alkoholfrei-20x05l-glas.jpg` | [https://www.getraenkedienst.com/muenchen/de/bier/alkoholfreies-bier/becks-blue-alkoholfrei-20-x-0-5l](https://www.getraenkedienst.com/muenchen/de/bier/alkoholfreies-bier/becks-blue-alkoholfrei-20-x-0-5l) |
+| MG-A-00090 | `becks-pils-24x033l-glas.jpg` | [https://expressdrinks.de/bier/pils/307/becks-pils-24x0-33l](https://expressdrinks.de/bier/pils/307/becks-pils-24x0-33l) |
+| MG-A-00091 | `becks-gold-24x033l-glas.jpg` | [https://www.getraenkedienst.com/bier/pils/becks-gold-24-x-0-33l](https://www.getraenkedienst.com/bier/pils/becks-gold-24-x-0-33l) |
+| MG-A-00092 | `becks-blue-alkoholfrei-24x033l-glas.jpg` | [https://www.getraenkedienst.com/bier/alkoholfreies-bier/becks-blue-alkoholfrei-24-x-0-33l](https://www.getraenkedienst.com/bier/alkoholfreies-bier/becks-blue-alkoholfrei-24-x-0-33l) |
+| MG-A-00094 | `becks-green-lemon-24x033l-glas.jpg` | [https://expressdrinks.de/bier/biermischgetraenke/34/becks-green-lemon-24x0-33l](https://expressdrinks.de/bier/biermischgetraenke/34/becks-green-lemon-24x0-33l) |
+| MG-A-00095 | `bitburger-pils-premium-20x05l-glas.jpg` | [https://www.getraenkedienst.com/bier/pils/bitburger-pils-20-x-0-5l](https://www.getraenkedienst.com/bier/pils/bitburger-pils-20-x-0-5l) |
+| MG-A-00096 | `bitburger-00-alkoholfrei-20x05l-glas.jpg` | [https://www.getraenkedienst.com/bier/alkoholfreies-bier/bitburger-pils-0-0-alkoholfrei-20-x-0-5l](https://www.getraenkedienst.com/bier/alkoholfreies-bier/bitburger-pils-0-0-alkoholfrei-20-x-0-5l) |
+| MG-A-00097 | `bitburger-natur-radler-20x05l-glas.webp` | [https://www.aktionspreis.de/sorte/bitburger-radler-naturtrueb-kasten-20-x-0-5l-angebote](https://www.aktionspreis.de/sorte/bitburger-radler-naturtrueb-kasten-20-x-0-5l-angebote) |
+| MG-A-00098 | `erdinger-hefe-hell-20x05l-glas.jpg` | [https://expressdrinks.de/bier/weissbier/615/erdinger-weissbier-hell-20x0-5l](https://expressdrinks.de/bier/weissbier/615/erdinger-weissbier-hell-20x0-5l) |
+| MG-A-00099 | `erdinger-urweisse-20x05l-glas.jpg` | [https://www.getraenkedienst.com/muenchen/de/bier/weissbier/erdinger-urweisse-20-x-0-5l](https://www.getraenkedienst.com/muenchen/de/bier/weissbier/erdinger-urweisse-20-x-0-5l) |
+| MG-A-00100 | `erdinger-alkoholfrei-20x05l-glas.jpg` | [https://expressdrinks.de/bier/alkoholfrei/745/erdinger-weissbier-alkoholfrei-20x0-5l](https://expressdrinks.de/bier/alkoholfrei/745/erdinger-weissbier-alkoholfrei-20x0-5l) |
+| MG-A-00101 | `tegernseer-hell-20x05l-glas.png` | [https://expressdrinks.de/bier/helles/154/tegernseer-hell-20x0-5l](https://expressdrinks.de/bier/helles/154/tegernseer-hell-20x0-5l) |
+| MG-A-00102 | `tegernseer-hell-24x033l-glas.png` | [https://expressdrinks.de/bier/helles/153/tegernseer-hell-24x0-33l](https://expressdrinks.de/bier/helles/153/tegernseer-hell-24x0-33l) |
+| MG-A-00103 | `tegernseer-alkoholfrei-20x05l-glas.jpg` | [https://expressdrinks.de/bier/alkoholfrei/5014/tegernseer-hell-alkoholfrei-20x0-5l-mhd-29.01.2026](https://expressdrinks.de/bier/alkoholfrei/5014/tegernseer-hell-alkoholfrei-20x0-5l-mhd-29.01.2026) |
