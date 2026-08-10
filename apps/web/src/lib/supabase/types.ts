@@ -30,13 +30,14 @@ export type InventoryMovementType =
   | "BREAKAGE"
   | "MANUAL_CORRECTION";
 
-export type BottleMaterial = "GLASS" | "PET";
+export type BottleMaterial = "GLASS" | "PET" | "KARTON";
 
 export type ProductCategory =
   | "WASSER"
   | "BIER"
   | "WEIN_SEKT"
   | "SAFT_SCHORLEN"
+  | "SAFT_NEKTAR"
   | "SOFTDRINKS"
   | "SONSTIGES";
 
@@ -48,6 +49,9 @@ export interface CartItemSnapshot {
   brand: string;
   gebinde: string;
   quantity: number;
+  sale_price_cents: number | null;
+  deposit_name: string | null;
+  deposit_amount_cents: number | null;
 }
 
 interface Table<Row, Insert, Update = Partial<Insert>> {
@@ -445,6 +449,10 @@ export interface Database {
         bottle_volume_ml: number;
         bottle_material: BottleMaterial;
         image_url: string | null;
+        tax_rate_percent: number | null;
+        sale_price_cents: number | null;
+        deposit_name: string | null;
+        deposit_amount_cents: number | null;
       }>;
     };
     Functions: {

@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Beer, CupSoda, GlassWater, PackageSearch, Wine } from "lucide-react";
+import { Beer, CupSoda, GlassWater, Grape, PackageSearch, Wine } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { AddToCartButton } from "@/components/marketing/add-to-cart-button";
 import { createClient } from "@/lib/supabase/server";
-import { categoryLabels, formatGebinde } from "@/lib/domain/catalog";
+import { categoryLabels, formatGebinde, formatPriceCents } from "@/lib/domain/catalog";
 import type { ProductCategory } from "@/lib/supabase/types";
 
 export const metadata: Metadata = {
   title: "Sortiment — MainGetränke",
   description:
-    "Wasser, Bier, Wein & Sekt, Saft & Schorlen und Softgetränke — kastenweise, aus Kitzingen und Umgebung.",
+    "Wasser, Bier, Wein & Sekt, Saft & Nektar und Erfrischungsgetränke — kastenweise, aus Kitzingen und Umgebung.",
 };
 
 const categoryIcons: Record<ProductCategory, typeof GlassWater> = {
@@ -18,12 +18,14 @@ const categoryIcons: Record<ProductCategory, typeof GlassWater> = {
   BIER: Beer,
   WEIN_SEKT: Wine,
   SAFT_SCHORLEN: CupSoda,
+  SAFT_NEKTAR: Grape,
   SOFTDRINKS: CupSoda,
   SONSTIGES: PackageSearch,
 };
 
 const categoryOrder: ProductCategory[] = [
   "WASSER",
+  "SAFT_NEKTAR",
   "SOFTDRINKS",
   "BIER",
   "WEIN_SEKT",
@@ -51,8 +53,9 @@ export default async function SortimentPage() {
           Unser Sortiment
         </h1>
         <p className="mt-2 text-muted-foreground">
-          Alles kastenweise. Preise erfahrt ihr bei der Bestellanfrage —
-          Pfand und Liefergebühr (2,50&nbsp;€) kommen dazu.
+          Alles kastenweise, Preise inkl. 19&nbsp;% MwSt. Pfand (sofern
+          zutreffend) und Liefergebühr (2,50&nbsp;€ pro Bestellung) kommen
+          separat dazu.
         </p>
       </div>
 
@@ -106,11 +109,33 @@ export default async function SortimentPage() {
                             {formatGebinde(product)}
                           </span>
                         </div>
+                        <div className="flex flex-col">
+                          {product.sale_price_cents != null ? (
+                            <span className="text-lg font-bold text-foreground">
+                              {formatPriceCents(product.sale_price_cents)}
+                            </span>
+                          ) : (
+                            <span className="text-muted-foreground text-sm">
+                              Preis auf Anfrage
+                            </span>
+                          )}
+                          {product.deposit_name ? (
+                            <span className="text-muted-foreground text-xs">
+                              zzgl. Pfand
+                              {product.deposit_amount_cents != null
+                                ? ` (${formatPriceCents(product.deposit_amount_cents)})`
+                                : ""}
+                            </span>
+                          ) : null}
+                        </div>
                         <AddToCartButton
                           productId={product.id}
                           name={`${product.brand}${product.variant ? ` ${product.variant}` : ""}`}
                           brand={product.brand}
                           gebinde={formatGebinde(product)}
+                          salePriceCents={product.sale_price_cents}
+                          depositName={product.deposit_name}
+                          depositAmountCents={product.deposit_amount_cents}
                         />
                       </CardContent>
                     </Card>

@@ -143,16 +143,21 @@ RLS policy above denies it by design. Two narrow exceptions:
   privileges by default (not the caller's), so this view bypasses
   `products`' RLS by construction; the safety boundary is which columns
   the view selects, not a grant on the base table. See
-  `20260806090100_public_product_catalog_view.sql`.
+  `20260806090100_public_product_catalog_view.sql`. As of
+  `20260810120100_public_product_catalog_pricing.sql` it also exposes the
+  current gross sale price, tax rate, and Pfand (name + amount, both
+  nullable) — still no purchase price or stock levels.
 - **`order_inquiries`** / **`contact_messages`** — the cart checkout and
   contact form both insert here. RLS grants `INSERT` broadly (best-effort
   `CHECK` constraints only — real spam/rate-limit protection is Release
   1.1 per spec) and restricts `SELECT`/`UPDATE` to `DISPOSITION`/
   `BUCHHALTUNG`/`ADMIN`. See `20260806090000_public_leads.sql`.
 
-An inquiry is a **lead**, not a real order: no price is computed or
-promised (no real sale prices exist yet — see [Pricing](#pricing)), and
-`items` is a denormalized `jsonb` snapshot rather than real `order_items`
+An inquiry is a **lead**, not a real order: the cart now shows and totals
+real sale prices (see [Pricing](#pricing)), but nothing is charged or
+reserved here — that's still Phase 2's order pipeline. `items` is a
+denormalized `jsonb` snapshot (including the price/Pfand shown at the
+time) rather than real `order_items`
 rows, since there's no priced/reserved order behind it. A staff member
 turns a promising inquiry into a real order manually until the Phase 2
 order pipeline exists.

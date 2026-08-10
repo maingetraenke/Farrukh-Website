@@ -10,11 +10,17 @@ export function AddToCartButton({
   name,
   brand,
   gebinde,
+  salePriceCents,
+  depositName,
+  depositAmountCents,
 }: {
   productId: string;
   name: string;
   brand: string;
   gebinde: string;
+  salePriceCents: number | null;
+  depositName: string | null;
+  depositAmountCents: number | null;
 }) {
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
@@ -48,7 +54,10 @@ export function AddToCartButton({
         size="sm"
         className="flex-1"
         onClick={() => {
-          addItem({ productId, name, brand, gebinde }, quantity);
+          addItem(
+            { productId, name, brand, gebinde, salePriceCents, depositName, depositAmountCents },
+            quantity,
+          );
           setQuantity(1);
           setAdded(true);
           setTimeout(() => setAdded(false), 1500);

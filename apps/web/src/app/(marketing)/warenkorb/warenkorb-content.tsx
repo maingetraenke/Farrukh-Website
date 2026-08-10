@@ -9,12 +9,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useCart } from "@/lib/cart/cart-context";
+import { formatPriceCents } from "@/lib/domain/catalog";
 import { submitOrderInquiry, type OrderInquiryState } from "@/lib/leads/actions";
 
 const initialState: OrderInquiryState = {};
 
+// Matches organization_settings.default_delivery_fee_cents (see
+// CLAUDE.md). The public site is anonymous and has no session to read the
+// live setting from, so this mirrors the documented default — an admin
+// changing it in settings would need this constant updated too.
+const DELIVERY_FEE_CENTS = 250;
+
 export function WarenkorbContent() {
-  const { items, totalCases, updateQuantity, removeItem, clear } = useCart();
+  const { items, totalCases, subtotalCents, updateQuantity, removeItem, clear } = useCart();
   const action = submitOrderInquiry.bind(
     null,
     items.map((item) => ({
@@ -23,9 +30,24 @@ export function WarenkorbContent() {
       brand: item.brand,
       gebinde: item.gebinde,
       quantity: item.quantity,
+      sale_price_cents: item.salePriceCents,
+      deposit_name: item.depositName,
+      deposit_amount_cents: item.depositAmountCents,
     })),
   );
   const [state, formAction, pending] = useActionState(action, initialState);
+
+  let depositCents = 0;
+  let hasUnresolvedDeposit = false;
+  for (const item of items) {
+    if (item.depositName == null) continue;
+    if (item.depositAmountCents == null) {
+      hasUnresolvedDeposit = true;
+      continue;
+    }
+    depositCents += item.depositAmountCents * item.quantity;
+  }
+  const totalCents = subtotalCents + depositCents + DELIVERY_FEE_CENTS;
 
   // Clear the cart once the inquiry is safely stored server-side, not
   // before — items are still shown/editable while pending or on error.
@@ -75,8 +97,13 @@ export function WarenkorbContent() {
         Warenkorb &amp; Bestellanfrage
       </h1>
       <p className="text-muted-foreground mt-2">
-        Kein verbindlicher Preis an dieser Stelle — wir melden uns mit
-        Preisen, Pfand und einem Liefertermin zurück.
+        Die angezeigten Preise sind unsere aktuellen Verkaufspreise inkl.
+        19&nbsp;% MwSt. Wir bestätigen deine Anfrage inkl. Liefertermin.
+      </p>
+      <p className="border-border bg-accent text-foreground mt-4 rounded-lg border px-4 py-3 text-sm">
+        Bestellungen für den Folgetag und spätere Liefertage müssen bis
+        16:00&nbsp;Uhr am Vortag eingegangen sein. Eine Lieferung am selben
+        Tag ist nicht möglich. Liefertage Montag–Freitag, 09:00–17:00&nbsp;Uhr.
       </p>
 
       <div className="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-[1.2fr_1fr]">
@@ -91,6 +118,16 @@ export function WarenkorbContent() {
                   <span className="text-muted-foreground text-xs">
                     {item.gebinde}
                   </span>
+                  {item.salePriceCents != null ? (
+                    <span className="text-muted-foreground text-xs">
+                      {formatPriceCents(item.salePriceCents)} × {item.quantity} ={" "}
+                      {formatPriceCents(item.salePriceCents * item.quantity)}
+                    </span>
+                  ) : (
+                    <span className="text-muted-foreground text-xs">
+                      Preis auf Anfrage
+                    </span>
+                  )}
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-1 rounded-lg border border-border">
@@ -133,9 +170,30 @@ export function WarenkorbContent() {
               </CardContent>
             </Card>
           ))}
-          <div className="flex items-center justify-between px-1 text-sm font-medium text-foreground">
-            <span>Kästen gesamt</span>
-            <span>{totalCases}</span>
+          <div className="flex flex-col gap-1 px-1 text-sm text-foreground">
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground">Kästen gesamt</span>
+              <span className="font-medium">{totalCases}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground">Zwischensumme</span>
+              <span className="font-medium">{formatPriceCents(subtotalCents)}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground">Pfand</span>
+              <span className="font-medium">
+                {depositCents > 0 ? formatPriceCents(depositCents) : "—"}
+                {hasUnresolvedDeposit ? " zzgl. weiterem Pfand (wird mitgeteilt)" : ""}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground">Liefergebühr</span>
+              <span className="font-medium">{formatPriceCents(DELIVERY_FEE_CENTS)}</span>
+            </div>
+            <div className="mt-1 flex items-center justify-between border-t border-border pt-2 text-base font-bold">
+              <span>Gesamt</span>
+              <span>{formatPriceCents(totalCents)}</span>
+            </div>
           </div>
         </div>
 

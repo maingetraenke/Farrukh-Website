@@ -15,11 +15,18 @@ export interface CartItem {
   brand: string;
   gebinde: string;
   quantity: number;
+  // Snapshot of the price/Pfand at the moment the item was added — the
+  // cart must use exactly this, never re-derive it from a live lookup, so
+  // the total shown matches what's actually submitted with the inquiry.
+  salePriceCents: number | null;
+  depositName: string | null;
+  depositAmountCents: number | null;
 }
 
 interface CartContextValue {
   items: CartItem[];
   totalCases: number;
+  subtotalCents: number;
   addItem: (item: Omit<CartItem, "quantity">, quantity?: number) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   removeItem: (productId: string) => void;
@@ -92,9 +99,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     [items],
   );
 
+  const subtotalCents = useMemo(
+    () => items.reduce((sum, i) => sum + (i.salePriceCents ?? 0) * i.quantity, 0),
+    [items],
+  );
+
   const value = useMemo(
-    () => ({ items, totalCases, addItem, updateQuantity, removeItem, clear }),
-    [items, totalCases, addItem, updateQuantity, removeItem, clear],
+    () => ({
+      items,
+      totalCases,
+      subtotalCents,
+      addItem,
+      updateQuantity,
+      removeItem,
+      clear,
+    }),
+    [items, totalCases, subtotalCents, addItem, updateQuantity, removeItem, clear],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
