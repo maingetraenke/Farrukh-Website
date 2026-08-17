@@ -22,6 +22,15 @@ export function formatGebinde(product: {
   return `${product.bottles_per_case}×${formatLiters(product.bottle_volume_ml)}L ${material}`;
 }
 
+// Wein & Sekt is advertised (homepage tiles, footer, Sortiment page) but
+// has no products yet. Transitional switch, owner to decide finally:
+//   true  (default) — keep the category visible everywhere, Sortiment
+//         shows a "Sortiment folgt in Kürze" placeholder instead of
+//         nothing/an empty gap.
+//   false — hide the category everywhere (homepage tiles, footer link,
+//         Sortiment section) until real products exist.
+export const WEIN_SEKT_COMING_SOON = true;
+
 export const categoryLabels: Record<string, string> = {
   WASSER: "Wasser",
   BIER: "Bier",

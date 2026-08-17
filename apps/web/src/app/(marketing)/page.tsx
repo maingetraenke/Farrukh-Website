@@ -25,6 +25,7 @@ import {
   StepSelectIllustration,
 } from "@/components/marketing/illustrations";
 import { ContactForm } from "@/components/marketing/contact-form";
+import { WEIN_SEKT_COMING_SOON } from "@/lib/domain/catalog";
 
 export const metadata: Metadata = {
   title: "MainGetränke — Dein Getränkeservice aus der Region",
@@ -76,7 +77,9 @@ const reasons = [
 const categories = [
   { icon: GlassWater, title: "Wasser", text: "Natürlich & erfrischend" },
   { icon: Beer, title: "Bier", text: "Konfigurierbares Sortiment" },
-  { icon: Wine, title: "Wein & Sekt", text: "Aus der Region und darüber hinaus" },
+  ...(WEIN_SEKT_COMING_SOON
+    ? [{ icon: Wine, title: "Wein & Sekt", text: "Aus der Region und darüber hinaus" }]
+    : []),
   { icon: CupSoda, title: "Saft & Schorlen", text: "Fruchtig & vielfältig" },
 ];
 

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
+import { WEIN_SEKT_COMING_SOON } from "@/lib/domain/catalog";
 
 export function SiteFooter() {
   return (
@@ -34,9 +35,11 @@ export function SiteFooter() {
           <Link href="/#sortiment" className="text-sm text-white/60 hover:text-white">
             Bier
           </Link>
-          <Link href="/#sortiment" className="text-sm text-white/60 hover:text-white">
-            Wein &amp; Sekt
-          </Link>
+          {WEIN_SEKT_COMING_SOON ? (
+            <Link href="/#sortiment" className="text-sm text-white/60 hover:text-white">
+              Wein &amp; Sekt
+            </Link>
+          ) : null}
           <Link href="/#sortiment" className="text-sm text-white/60 hover:text-white">
             Saft &amp; Schorlen
           </Link>

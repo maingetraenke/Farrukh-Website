@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { Beer, CupSoda, GlassWater, Grape, PackageSearch, Wine } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { AddToCartButton } from "@/components/marketing/add-to-cart-button";
 import { createClient } from "@/lib/supabase/server";
 import {
+  WEIN_SEKT_COMING_SOON,
   categoryLabels,
   formatGebinde,
   formatPriceCents,
@@ -72,7 +75,13 @@ export default async function SortimentPage() {
         <div className="mt-12 flex flex-col gap-16">
           {categoryOrder.map((category) => {
             const items = byCategory.get(category);
-            if (!items || items.length === 0) return null;
+            const isEmpty = !items || items.length === 0;
+            // Wein & Sekt has no products yet — see WEIN_SEKT_COMING_SOON
+            // in lib/domain/catalog.ts for the toggle between showing a
+            // placeholder here vs. hiding the category entirely.
+            const showComingSoon =
+              isEmpty && category === "WEIN_SEKT" && WEIN_SEKT_COMING_SOON;
+            if (isEmpty && !showComingSoon) return null;
             const Icon = categoryIcons[category];
             return (
               <section key={category}>
@@ -84,8 +93,27 @@ export default async function SortimentPage() {
                     {categoryLabels[category]}
                   </h2>
                 </div>
+                {showComingSoon ? (
+                  <Card className="border-dashed shadow-none">
+                    <CardContent className="flex flex-col items-center gap-3 py-12 text-center">
+                      <div className="flex size-12 items-center justify-center rounded-full bg-accent text-primary">
+                        <Icon className="size-6" />
+                      </div>
+                      <p className="text-sm font-medium text-foreground">
+                        Sortiment folgt in Kürze
+                      </p>
+                      <p className="text-muted-foreground max-w-sm text-sm">
+                        Wein &amp; Sekt nehmen wir bald in unser Sortiment auf.
+                        Du hast einen konkreten Wunsch? Sprich uns gerne an.
+                      </p>
+                      <Button asChild size="sm" className="mt-2">
+                        <Link href="/#kontakt">Kontakt aufnehmen</Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ) : (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {items.map((product) => (
+                  {(items ?? []).map((product) => (
                     <Card
                       key={product.id}
                       className="shadow-sm transition-shadow hover:shadow-md"
@@ -157,6 +185,7 @@ export default async function SortimentPage() {
                     </Card>
                   ))}
                 </div>
+                )}
               </section>
             );
           })}
