@@ -89,7 +89,12 @@ export function InvoiceDocument({
 }) {
   const logo = getLogoDataUri();
   const issuedDate = new Intl.DateTimeFormat("de-DE").format(new Date(invoice.issued_at));
-  const dueDate = new Intl.DateTimeFormat("de-DE").format(new Date(invoice.due_date));
+  // invoice.due_date/payment_terms_days are still stored (see
+  // generate-invoice.ts) for potential future overdue-tracking, but the
+  // actual business model is pay-on-handover (Barzahlung/Kartenzahlung
+  // bei Lieferung) — the customer-facing PDF says that directly instead
+  // of a net-days due date, which would otherwise misleadingly imply an
+  // outstanding balance to transfer.
   const hasBankDetails = orgSettings.bank_name && orgSettings.iban;
 
   return (
@@ -136,11 +141,7 @@ export function InvoiceDocument({
             </Text>
             <Text>
               <Text style={styles.metaLabel}>Zahlungsziel: </Text>
-              {invoice.payment_terms_days} Tage
-            </Text>
-            <Text>
-              <Text style={styles.metaLabel}>Fällig am: </Text>
-              {dueDate}
+              bei Übergabe (Barzahlung/Kartenzahlung bei Lieferung)
             </Text>
           </View>
         </View>

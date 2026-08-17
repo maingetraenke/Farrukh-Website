@@ -88,10 +88,7 @@ export default async function InvoicesPage() {
                     {formatCents(invoice.total_cents)}
                   </p>
                   <p className="text-muted-foreground text-xs">
-                    Fällig am{" "}
-                    {new Intl.DateTimeFormat("de-DE").format(
-                      new Date(invoice.due_date),
-                    )}
+                    Zahlungsziel: bei Übergabe
                   </p>
                   {invoice.email_status === "FAILED" && invoice.email_error ? (
                     <p className="text-destructive mt-1 text-xs">
