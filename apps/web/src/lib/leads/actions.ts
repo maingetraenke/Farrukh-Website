@@ -2,6 +2,10 @@
 
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import {
+  EARLIEST_DELIVERY_DATE_ERROR,
+  isValidRequestedDeliveryDate,
+} from "@/lib/domain/delivery";
 import type { CartItemSnapshot } from "@/lib/supabase/types";
 
 function getDefaultOrgId(): string {
@@ -72,7 +76,13 @@ const orderInquirySchema = z.object({
   deliveryStreet: z.string().trim().optional(),
   deliveryPostalCode: z.string().trim().optional(),
   deliveryCity: z.string().trim().optional(),
-  requestedDate: z.string().trim().optional(),
+  requestedDate: z
+    .string()
+    .trim()
+    .optional()
+    .refine((date) => !date || isValidRequestedDeliveryDate(date), {
+      error: EARLIEST_DELIVERY_DATE_ERROR,
+    }),
   notes: z.string().trim().optional(),
   website: z.string().max(0).optional(),
 });

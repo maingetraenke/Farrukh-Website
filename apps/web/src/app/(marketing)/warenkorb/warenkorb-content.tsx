@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useCart } from "@/lib/cart/cart-context";
 import { formatPriceCents } from "@/lib/domain/catalog";
+import { EARLIEST_DELIVERY_DATE } from "@/lib/domain/delivery";
 import { submitOrderInquiry, type OrderInquiryState } from "@/lib/leads/actions";
 
 const initialState: OrderInquiryState = {};
@@ -230,7 +231,15 @@ export function WarenkorbContent() {
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="requestedDate">Wunschtermin (optional)</Label>
-            <Input id="requestedDate" name="requestedDate" type="date" />
+            <Input
+              id="requestedDate"
+              name="requestedDate"
+              type="date"
+              min={EARLIEST_DELIVERY_DATE}
+            />
+            <p className="text-muted-foreground text-xs">
+              Frühester Liefertermin: 14.09.2026.
+            </p>
           </div>
           <div className="flex flex-col gap-2">
             <Label htmlFor="notes">Anmerkungen (optional)</Label>
