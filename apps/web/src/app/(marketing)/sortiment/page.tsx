@@ -4,7 +4,12 @@ import { Beer, CupSoda, GlassWater, Grape, PackageSearch, Wine } from "lucide-re
 import { Card, CardContent } from "@/components/ui/card";
 import { AddToCartButton } from "@/components/marketing/add-to-cart-button";
 import { createClient } from "@/lib/supabase/server";
-import { categoryLabels, formatGebinde, formatPriceCents } from "@/lib/domain/catalog";
+import {
+  categoryLabels,
+  formatGebinde,
+  formatPriceCents,
+  formatUnitPricePerLiter,
+} from "@/lib/domain/catalog";
 import type { ProductCategory } from "@/lib/supabase/types";
 
 export const metadata: Metadata = {
@@ -111,9 +116,20 @@ export default async function SortimentPage() {
                         </div>
                         <div className="flex flex-col">
                           {product.sale_price_cents != null ? (
-                            <span className="text-lg font-bold text-foreground">
-                              {formatPriceCents(product.sale_price_cents)}
-                            </span>
+                            <div className="flex items-baseline gap-1.5">
+                              <span className="text-lg font-bold text-foreground">
+                                {formatPriceCents(product.sale_price_cents)}
+                              </span>
+                              <span className="text-muted-foreground text-xs">
+                                (
+                                {formatUnitPricePerLiter({
+                                  sale_price_cents: product.sale_price_cents,
+                                  bottles_per_case: product.bottles_per_case,
+                                  bottle_volume_ml: product.bottle_volume_ml,
+                                })}
+                                )
+                              </span>
+                            </div>
                           ) : (
                             <span className="text-muted-foreground text-sm">
                               Preis auf Anfrage

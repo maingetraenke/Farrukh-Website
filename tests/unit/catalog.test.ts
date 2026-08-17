@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { formatGebinde, formatPriceCents } from "@/lib/domain/catalog";
+import {
+  formatGebinde,
+  formatPriceCents,
+  formatUnitPricePerLiter,
+} from "@/lib/domain/catalog";
 
 describe("formatGebinde", () => {
   it("formats a 1,0L PET case", () => {
@@ -41,5 +45,37 @@ describe("formatPriceCents", () => {
 
   it("formats amounts under one euro", () => {
     expect(formatPriceCents(99)).toBe("0,99 €");
+  });
+});
+
+describe("formatUnitPricePerLiter", () => {
+  it("computes euro-per-liter for a 12x0,7L case", () => {
+    expect(
+      formatUnitPricePerLiter({
+        sale_price_cents: 699,
+        bottles_per_case: 12,
+        bottle_volume_ml: 700,
+      }),
+    ).toBe("0,83 €/L");
+  });
+
+  it("computes euro-per-liter for a 12x1,0L case (whole euro)", () => {
+    expect(
+      formatUnitPricePerLiter({
+        sale_price_cents: 1200,
+        bottles_per_case: 12,
+        bottle_volume_ml: 1000,
+      }),
+    ).toBe("1,00 €/L");
+  });
+
+  it("computes euro-per-liter for a 20x0,5L case", () => {
+    expect(
+      formatUnitPricePerLiter({
+        sale_price_cents: 1899,
+        bottles_per_case: 20,
+        bottle_volume_ml: 500,
+      }),
+    ).toBe("1,90 €/L");
   });
 });

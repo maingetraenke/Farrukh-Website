@@ -40,3 +40,18 @@ export function formatPriceCents(cents: number): string {
     currency: "EUR",
   });
 }
+
+// PAngV Grundpreis (price per liter), derived from the case price and the
+// already-structured bottles_per_case/bottle_volume_ml columns — no
+// string parsing needed, these are real numeric fields, not text baked
+// into a title. Rounds to the nearest cent, same as the case price.
+export function formatUnitPricePerLiter(product: {
+  sale_price_cents: number;
+  bottles_per_case: number;
+  bottle_volume_ml: number;
+}): string {
+  const totalLiters =
+    (product.bottles_per_case * product.bottle_volume_ml) / 1000;
+  const centsPerLiter = product.sale_price_cents / totalLiters;
+  return `${formatPriceCents(Math.round(centsPerLiter))}/L`;
+}
