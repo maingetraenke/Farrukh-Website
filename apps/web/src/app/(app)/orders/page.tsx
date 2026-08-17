@@ -23,36 +23,6 @@ export default async function OrdersPage() {
     .eq("organization_id", user.organizationId!)
     .order("created_at", { ascending: false });
 
-  const productIds = Array.from(
-    new Set(
-      (inquiries ?? []).flatMap((inquiry) =>
-        inquiry.items.map((item) => item.product_id),
-      ),
-    ),
-  );
-
-  // Current sale price per product, following the "latest row with
-  // valid_from <= now()" read pattern from docs/database.md — never a
-  // materialized/cached price column.
-  const currentPriceByProduct = new Map<string, number>();
-  if (productIds.length > 0) {
-    const { data: prices } = await supabase
-      .from("product_prices")
-      .select("product_id, sale_price_cents, valid_from")
-      .in("product_id", productIds)
-      .lte("valid_from", new Date().toISOString())
-      .order("valid_from", { ascending: false });
-
-    for (const price of prices ?? []) {
-      if (
-        !currentPriceByProduct.has(price.product_id) &&
-        price.sale_price_cents !== null
-      ) {
-        currentPriceByProduct.set(price.product_id, price.sale_price_cents);
-      }
-    }
-  }
-
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -60,9 +30,10 @@ export default async function OrdersPage() {
           Bestellungen
         </h1>
         <p className="text-muted-foreground mt-1 text-sm">
-          Bestellanfragen aus dem öffentlichen Warenkorb. Noch keine
-          verbindlichen Preise, solange keine Verkaufspreise hinterlegt sind
-          — siehe Produkte.
+          Bestellanfragen aus dem öffentlichen Warenkorb. Preise und Pfand
+          sind der Stand zum Zeitpunkt der Anfrage (Preis-Snapshot) — spätere
+          Preisänderungen im Sortiment wirken sich nicht rückwirkend auf
+          bereits eingegangene Anfragen aus.
         </p>
       </div>
 
@@ -84,12 +55,29 @@ export default async function OrdersPage() {
       ) : (
         <div className="flex flex-col gap-4">
           {inquiries.map((inquiry) => {
-            const total = inquiry.items.reduce((sum, item) => {
-              const price = currentPriceByProduct.get(item.product_id);
-              return price != null ? sum + price * item.quantity : sum;
-            }, 0);
+            // Snapshot values captured at the time the inquiry was
+            // submitted (see CartItemSnapshot) — never re-derived from the
+            // current catalog, per the price-snapshot rule (old inquiries
+            // must not change if a price is edited later).
+            const goodsTotal = inquiry.items.reduce(
+              (sum, item) =>
+                item.sale_price_cents != null
+                  ? sum + item.sale_price_cents * item.quantity
+                  : sum,
+              0,
+            );
+            const depositTotal = inquiry.items.reduce(
+              (sum, item) =>
+                item.deposit_amount_cents != null
+                  ? sum + item.deposit_amount_cents * item.quantity
+                  : sum,
+              0,
+            );
             const hasUnpricedItem = inquiry.items.some(
-              (item) => !currentPriceByProduct.has(item.product_id),
+              (item) => item.sale_price_cents == null,
+            );
+            const hasUnresolvedDeposit = inquiry.items.some(
+              (item) => item.deposit_name != null && item.deposit_amount_cents == null,
             );
 
             return (
@@ -161,43 +149,56 @@ export default async function OrdersPage() {
                   <div className="flex flex-col gap-2">
                     <table className="w-full text-sm">
                       <tbody>
-                        {inquiry.items.map((item) => {
-                          const price = currentPriceByProduct.get(
-                            item.product_id,
-                          );
-                          return (
-                            <tr
-                              key={item.product_id}
-                              className="border-border border-b last:border-0"
-                            >
-                              <td className="py-1.5 pr-2">
-                                <span className="text-foreground">
-                                  {item.name}
+                        {inquiry.items.map((item) => (
+                          <tr
+                            key={item.product_id}
+                            className="border-border border-b last:border-0"
+                          >
+                            <td className="py-1.5 pr-2">
+                              <span className="text-foreground">
+                                {item.name}
+                              </span>
+                              <span className="text-muted-foreground ml-1.5 text-xs">
+                                {item.gebinde}
+                              </span>
+                              {item.deposit_name ? (
+                                <span className="text-muted-foreground block text-xs">
+                                  {item.deposit_name}
+                                  {item.deposit_amount_cents != null
+                                    ? `: ${formatCents(item.deposit_amount_cents)} × ${item.quantity} = ${formatCents(item.deposit_amount_cents * item.quantity)}`
+                                    : ": Betrag noch nicht hinterlegt"}
                                 </span>
-                                <span className="text-muted-foreground ml-1.5 text-xs">
-                                  {item.gebinde}
+                              ) : null}
+                            </td>
+                            <td className="text-muted-foreground py-1.5 pr-2 text-right whitespace-nowrap">
+                              {item.quantity}×
+                            </td>
+                            <td className="py-1.5 text-right whitespace-nowrap">
+                              {item.sale_price_cents != null ? (
+                                formatCents(item.sale_price_cents * item.quantity)
+                              ) : (
+                                <span className="text-muted-foreground text-xs">
+                                  kein Preis
                                 </span>
-                              </td>
-                              <td className="text-muted-foreground py-1.5 pr-2 text-right whitespace-nowrap">
-                                {item.quantity}×
-                              </td>
-                              <td className="py-1.5 text-right whitespace-nowrap">
-                                {price != null ? (
-                                  formatCents(price * item.quantity)
-                                ) : (
-                                  <span className="text-muted-foreground text-xs">
-                                    kein Preis
-                                  </span>
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        })}
+                              )}
+                            </td>
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
-                    <div className="flex items-center justify-between border-t border-border pt-2 text-sm font-medium text-foreground">
-                      <span>Zwischensumme{hasUnpricedItem ? " (unvollständig)" : ""}</span>
-                      <span>{formatCents(total)}</span>
+                    <div className="flex flex-col gap-1 border-t border-border pt-2 text-sm">
+                      <div className="flex items-center justify-between text-muted-foreground">
+                        <span>Warenwert{hasUnpricedItem ? " (unvollständig)" : ""}</span>
+                        <span>{formatCents(goodsTotal)}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-muted-foreground">
+                        <span>Pfand{hasUnresolvedDeposit ? " (unvollständig)" : ""}</span>
+                        <span>{formatCents(depositTotal)}</span>
+                      </div>
+                      <div className="flex items-center justify-between font-medium text-foreground">
+                        <span>Zwischensumme</span>
+                        <span>{formatCents(goodsTotal + depositTotal)}</span>
+                      </div>
                     </div>
                   </div>
                 </CardContent>

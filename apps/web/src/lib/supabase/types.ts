@@ -113,6 +113,7 @@ export interface Database {
           customer_number_prefix: string;
           supplier_number_prefix: string;
           order_number_prefix: string;
+          order_inquiry_number_prefix: string;
           invoice_number_prefix: string;
           delivery_note_number_prefix: string;
           route_number_prefix: string;
@@ -433,6 +434,61 @@ export interface Database {
           email: string;
           phone?: string | null;
           message: string;
+        }
+      >;
+      invoices: Table<
+        {
+          id: string;
+          organization_id: string;
+          invoice_number: string;
+          order_inquiry_id: string | null;
+          customer_name: string;
+          customer_email: string;
+          delivery_street: string | null;
+          delivery_postal_code: string | null;
+          delivery_city: string | null;
+          items: CartItemSnapshot[];
+          goods_total_cents: number;
+          deposit_total_cents: number;
+          delivery_fee_cents: number;
+          tax_total_cents: number;
+          total_cents: number;
+          payment_terms_days: number;
+          issued_at: string;
+          due_date: string;
+          email_status: "PENDING" | "SENT" | "FAILED";
+          email_sent_at: string | null;
+          email_error: string | null;
+          cancelled_at: string | null;
+          cancellation_reason: string | null;
+          created_by: string | null;
+          created_at: string;
+          updated_at: string;
+        },
+        {
+          organization_id: string;
+          order_inquiry_id?: string | null;
+          customer_name: string;
+          customer_email: string;
+          delivery_street?: string | null;
+          delivery_postal_code?: string | null;
+          delivery_city?: string | null;
+          items: CartItemSnapshot[];
+          goods_total_cents: number;
+          deposit_total_cents: number;
+          delivery_fee_cents: number;
+          tax_total_cents: number;
+          total_cents: number;
+          payment_terms_days: number;
+          due_date: string;
+          created_by?: string | null;
+        },
+        {
+          email_status?: "PENDING" | "SENT" | "FAILED";
+          email_sent_at?: string | null;
+          email_error?: string | null;
+          cancelled_at?: string | null;
+          cancellation_reason?: string | null;
         }
       >;
     };

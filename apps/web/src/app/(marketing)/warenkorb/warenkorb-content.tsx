@@ -39,11 +39,11 @@ export function WarenkorbContent() {
   const [state, formAction, pending] = useActionState(action, initialState);
 
   let depositCents = 0;
-  let hasUnresolvedDeposit = false;
+  let unresolvedDepositCount = 0;
   for (const item of items) {
     if (item.depositName == null) continue;
     if (item.depositAmountCents == null) {
-      hasUnresolvedDeposit = true;
+      unresolvedDepositCount += 1;
       continue;
     }
     depositCents += item.depositAmountCents * item.quantity;
@@ -129,6 +129,19 @@ export function WarenkorbContent() {
                       Preis auf Anfrage
                     </span>
                   )}
+                  {item.depositName != null ? (
+                    item.depositAmountCents != null ? (
+                      <span className="text-muted-foreground text-xs">
+                        + Pfand {formatPriceCents(item.depositAmountCents)} ×{" "}
+                        {item.quantity} ={" "}
+                        {formatPriceCents(item.depositAmountCents * item.quantity)}
+                      </span>
+                    ) : (
+                      <span className="text-xs text-amber-700">
+                        + Pfand: Betrag noch nicht hinterlegt
+                      </span>
+                    )
+                  ) : null}
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="flex items-center gap-1 rounded-lg border border-border">
@@ -181,18 +194,26 @@ export function WarenkorbContent() {
               <span className="font-medium">{formatPriceCents(subtotalCents)}</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">Pfand</span>
+              <span className="text-muted-foreground">Pfand gesamt</span>
               <span className="font-medium">
                 {depositCents > 0 ? formatPriceCents(depositCents) : "—"}
-                {hasUnresolvedDeposit ? " zzgl. weiterem Pfand (wird mitgeteilt)" : ""}
               </span>
             </div>
+            {unresolvedDepositCount > 0 ? (
+              <p className="text-xs text-amber-700">
+                Für {unresolvedDepositCount}{" "}
+                {unresolvedDepositCount === 1 ? "Position ist" : "Positionen sind"}{" "}
+                der Pfandbetrag noch nicht hinterlegt — siehe Hinweis oben bei
+                den betroffenen Artikeln. Dieser Betrag ist in der Summe unten
+                noch nicht enthalten.
+              </p>
+            ) : null}
             <div className="flex items-center justify-between">
               <span className="text-muted-foreground">Liefergebühr</span>
               <span className="font-medium">{formatPriceCents(DELIVERY_FEE_CENTS)}</span>
             </div>
             <div className="mt-1 flex items-center justify-between border-t border-border pt-2 text-base font-bold">
-              <span>Gesamt</span>
+              <span>Gesamt{unresolvedDepositCount > 0 ? " (vorläufig)" : ""}</span>
               <span>{formatPriceCents(totalCents)}</span>
             </div>
           </div>
