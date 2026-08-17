@@ -180,10 +180,16 @@ export interface Database {
           billing_street?: string | null;
           billing_postal_code?: string | null;
           billing_city?: string | null;
+          billing_country?: string;
           phone?: string | null;
           email?: string | null;
           preferred_payment_method?: PaymentMethod | null;
+          payment_terms_days?: number | null;
+          delivery_notes?: string | null;
           notes?: string | null;
+          vat_id?: string | null;
+          active?: boolean;
+          archived_at?: string | null;
         }
       >;
       customer_addresses: Table<
@@ -279,14 +285,22 @@ export interface Database {
         },
         {
           organization_id: string;
+          article_number?: string;
+          ean?: string | null;
           name: string;
           brand: string;
           category: ProductCategory;
+          variant?: string | null;
           bottles_per_case: number;
           bottle_volume_ml: number;
           bottle_material: BottleMaterial;
           supplier_id?: string | null;
           deposit_type_id?: string | null;
+          tax_rate_percent?: number | null;
+          min_stock?: number;
+          target_stock?: number | null;
+          image_url?: string | null;
+          active?: boolean;
         }
       >;
       product_prices: Table<
@@ -489,6 +503,28 @@ export interface Database {
           email_error?: string | null;
           cancelled_at?: string | null;
           cancellation_reason?: string | null;
+        }
+      >;
+      payments: Table<
+        {
+          id: string;
+          organization_id: string;
+          invoice_id: string;
+          method: PaymentMethod;
+          amount_cents: number;
+          paid_at: string;
+          notes: string | null;
+          recorded_by: string | null;
+          created_at: string;
+        },
+        {
+          organization_id: string;
+          invoice_id: string;
+          method: PaymentMethod;
+          amount_cents: number;
+          paid_at?: string;
+          notes?: string | null;
+          recorded_by?: string | null;
         }
       >;
     };
