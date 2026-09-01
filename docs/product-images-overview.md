@@ -228,3 +228,60 @@ falsches/generisches Bild zu erzwingen:
 | MG-A-00101 | `tegernseer-hell-20x05l-glas.png` | [https://expressdrinks.de/bier/helles/154/tegernseer-hell-20x0-5l](https://expressdrinks.de/bier/helles/154/tegernseer-hell-20x0-5l) |
 | MG-A-00102 | `tegernseer-hell-24x033l-glas.png` | [https://expressdrinks.de/bier/helles/153/tegernseer-hell-24x0-33l](https://expressdrinks.de/bier/helles/153/tegernseer-hell-24x0-33l) |
 | MG-A-00103 | `tegernseer-alkoholfrei-20x05l-glas.jpg` | [https://expressdrinks.de/bier/alkoholfrei/5014/tegernseer-hell-alkoholfrei-20x0-5l-mhd-29.01.2026](https://expressdrinks.de/bier/alkoholfrei/5014/tegernseer-hell-alkoholfrei-20x0-5l-mhd-29.01.2026) |
+
+## Vierter Anlauf — Kundenpreisliste 93 neue Produkte, 2026-09-01
+
+Bilder für die 93 Artikel aus `MainGetraenke_Kundenpreisliste_93_Neue_Produkte.pdf`
+(siehe `supabase/migrations/20260901090000_kundenpreisliste_93_produkte.sql` und
+`..._produktbilder.sql`) — drei neue Marken: Rhön, Bad Brückenauer/Schatzquelle
+(Sortimentserweiterung neben den bereits vorhandenen 6 Bad-Brückenauer-Bildern),
+Adelholzener. Wie in Runde 3 gilt: ein Bild pro Marke+Sorte, wiederverwendet über
+alle Gebinde-Größen derselben Sorte hinweg (Ausnahme: Adelholzener Apfelschorle,
+wo Glas- und PET-Gebinde echte unterschiedliche Produktfotos haben und daher
+beide behalten wurden). Jedes Kandidatenbild wurde vor der Übernahme visuell
+geprüft (nicht nur anhand von Dateinamen).
+
+**Quellen — durchgehend offizielle Herstellerseiten für alle drei Marken**,
+kein Rückgriff auf Fachhändler nötig in dieser Runde:
+- Rhön: [rhoensprudel.de](https://www.rhoensprudel.de) — pro Sorte ein Hero-Packshot,
+  wiederverwendet über Individualglas/PET/Kasten-Formate hinweg (die Seite selbst
+  führt nur eine Produktseite pro Geschmacksrichtung).
+- Bad Brückenauer / Schatzquelle: [badbrueckenauer.de/downloads/flaschen/](https://www.badbrueckenauer.de/downloads/flaschen/)
+  und [badbrueckenauer.de/downloads/schatzquelle/](https://www.badbrueckenauer.de/downloads/schatzquelle/) —
+  offizielle Handelspartner-Downloadseite mit einem Foto pro Flasche/Format.
+- Adelholzener: [adelholzener.de/marken-produkte/](https://www.adelholzener.de/marken-produkte/) —
+  freigestellte, transparente Produktfotos (PNG) aus dem dortigen Produktfinder,
+  beim Verarbeiten auf weißem Hintergrund freigestellt (vorher probeweise über
+  einen Recherche-Agenten versucht, der die Seite nicht erreichen konnte und
+  ersatzweise niedrig aufgelöste Kasten+Flasche-Fotos von getraenkedienst.com
+  gefunden hatte — beim direkten Abruf war die Seite aber erreichbar, daher
+  wurden die besseren offiziellen Fotos verwendet und die Händlerbilder verworfen).
+
+**60 von 62 möglichen Sorten-Gruppen** (Marke+Geschmack, unabhängig vom Gebinde)
+haben ein Bild bekommen. **2 offene Lücken:**
+
+- **Bad Brückenauer INDI Zitro-Limette** und **INDI Orangen-Limette** — beide
+  Positionen aus der PDF-Preisliste konnten nicht im aktuellen offiziellen
+  Sortiment auf badbrueckenauer.de wiedergefunden werden (das Download-Portal
+  scheint vollständig zu sein und listet diese Namen nicht). Nächstliegende
+  aktuelle Entsprechungen wären "Limette Minze" bzw. "Orange Ingwer" — bewusst
+  nicht automatisch zugeordnet, da nicht sicher dieselbe Sorte. `image_url`
+  bleibt NULL, bitte mit der tatsächlichen Rhön/Brückenauer-Bestellliste
+  abgleichen.
+
+Zusätzliche Anmerkungen:
+- **Adelholzener INDI Sanft / INDI Naturell / INDI Miwa+Lemon** (12×0,75L Glas):
+  keine eigene 0,75L-Glasflaschen-Aufnahme auf adelholzener.de gefunden — das
+  jeweilige 0,5L-PET-Foto derselben Geschmacksrichtung wird ersatzweise
+  verwendet (gleiche Konvention wie bei Rhön/Bad Brückenauer, ein Foto pro
+  Marke+Sorte über Gebinde hinweg).
+- **Rhön A.Ki.-Granatapfel**: Abkürzung aus der PDF war unklar; die
+  Herstellerseite führt das Produkt als "Apfel-Kirsche-Granatapfel" — Bild
+  dieser Sorte zugeordnet.
+- **Rhön A.Tr.- / Apfel-Traube (inkl. der als Dublette inaktiv gesetzten
+  "ZZZRhön APF-TRAUBE")**: Herstellerseite führt kein Produkt namens exakt
+  "Apfel-Traube", nur "Apfel-Rote Traube" — als nächstliegende Entsprechung
+  verwendet.
+- Alle neuen Dateien wurden auf max. 900px Kantenlänge skaliert und als JPEG
+  komprimiert (durchgehend unter 100KB); die transparenten Adelholzener-PNGs
+  wurden dabei auf einen reinweißen Hintergrund reduziert.
