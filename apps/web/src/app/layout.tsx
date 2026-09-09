@@ -1,16 +1,16 @@
-import type { Metadata } from "next";
+ import type { Metadata } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({
-  variable: "--font-inter",
   subsets: ["latin"],
+  variable: "--font-inter",
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
+  variable: "--font-geist-mono",
 });
 
 export const metadata: Metadata = {
@@ -19,17 +19,16 @@ export const metadata: Metadata = {
     "Interne Warenwirtschaft, Touren-, Pfand-, Zahlungs- und Rechnungsverwaltung für MainGetränke.",
 };
 
- export default function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-    <html
-      lang="de"
-      data-scroll-behavior="smooth"
-      className={`${inter.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
+  return (
+    <html lang="de" data-scroll-behavior="smooth">
+      <body
+        className={`${inter.variable} ${geistMono.variable} min-h-screen antialiased`}
+      >
         <TooltipProvider>{children}</TooltipProvider>
       </body>
     </html>
