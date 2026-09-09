@@ -19,8 +19,11 @@ export const metadata: Metadata = {
     "Interne Warenwirtschaft, Touren-, Pfand-, Zahlungs- und Rechnungsverwaltung für MainGetränke.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
-  return (
+ export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
     <html
       lang="de"
       data-scroll-behavior="smooth"
