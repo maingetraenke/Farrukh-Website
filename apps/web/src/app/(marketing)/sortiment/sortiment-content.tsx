@@ -57,9 +57,7 @@ export function SortimentContent({
     for (const category of categoryOrder) map.set(category, []);
     const query = search.trim().toLowerCase();
     for (const product of products) {
-      // Wein & Sekt has no real products — its section is a fixed
-      // "coming soon" notice, not something a text search should hide.
-      if (product.category === "WEIN_SEKT") continue;
+      
       const haystack = `${product.brand} ${product.variant ?? ""} ${product.name}`.toLowerCase();
       if (query && !haystack.includes(query)) continue;
       map.get(product.category)?.push(product);
