@@ -29,7 +29,7 @@ export function formatGebinde(product: {
 //         nothing/an empty gap.
 //   false — hide the category everywhere (homepage tiles, footer link,
 //         Sortiment section) until real products exist.
-export const WEIN_SEKT_COMING_SOON = true;
+export const WEIN_SEKT_COMING_SOON = false;
 
 export const categoryLabels: Record<string, string> = {
   WASSER: "Wasser",
