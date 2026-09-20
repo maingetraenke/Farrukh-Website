@@ -16,11 +16,13 @@ Router code, it points at the bundled version-matched docs.
 - Default delivery fee: 2,50 € (configurable in `organization_settings`)
 - Sale unit is always the **Kasten** (case) — no single-bottle sales
 - No energy drinks at launch. No 1.5 L soft drinks.
-- Water only: Gerolsteiner, Franken Brunnen, Alasia/Alasia PUR, Bad Brückenauer
+- Water only: Gerolsteiner, Franken Brunnen, Alasia/Alasia PUR, Bad
+  Brückenauer, Black Forest
 - Soft drinks: Coca-Cola (Original/Light/Zero), Fanta, Sprite, Mezzo Mix,
   Paulaner Spezi — only as 1,0 L Gebinde or 24×0,33 L Glas
 - Beer is a configurable assortment (Augustiner, Paulaner, Erdinger,
-  Krombacher, Bitburger, Distelhäuser, Würzburger Hofbräu discussed so far)
+  Krombacher, Bitburger, Distelhäuser, Würzburger Hofbräu, Beck's,
+  Tegernseer discussed so far)
 - Never invent real prices, deposit (Pfand) amounts, or tax rates. Seed data
   and fixtures must leave these fields empty/null with a TODO rather than
   fabricate plausible-looking numbers.

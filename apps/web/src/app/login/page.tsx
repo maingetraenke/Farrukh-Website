@@ -1,5 +1,5 @@
+import Image from "next/image";
 import { redirect } from "next/navigation";
-import { Droplet } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCurrentUser } from "@/lib/auth/session";
 import { LoginForm } from "./login-form";
@@ -12,9 +12,14 @@ export default async function LoginPage() {
     <div className="flex min-h-svh flex-col items-center justify-center bg-background px-4 py-12">
       <div className="flex w-full max-w-sm flex-col gap-6">
         <div className="flex flex-col items-center gap-2">
-          <div className="flex size-11 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-            <Droplet className="size-6" />
-          </div>
+          <Image
+            src="/logo.png"
+            alt="MainGetränke"
+            width={64}
+            height={64}
+            className="size-16 object-contain"
+            priority
+          />
           <span className="text-lg font-semibold text-foreground">
             MainGetränke
           </span>

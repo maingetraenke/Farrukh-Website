@@ -4,6 +4,7 @@ import {
   formatCents,
   lineTotalCents,
   orderTotalCents,
+  splitGrossCents,
   sumCents,
 } from "@/lib/domain/money";
 
@@ -58,5 +59,16 @@ describe("money", () => {
       0,
     );
     expect(total).toBe(100);
+  });
+
+  it("splits a gross amount into net + tax on a clean 19% case", () => {
+    expect(splitGrossCents(119, 19)).toEqual({ netCents: 100, taxCents: 19 });
+  });
+
+  it("splits a gross amount into net + tax where net rounds down", () => {
+    const { netCents, taxCents } = splitGrossCents(699, 19);
+    expect(netCents + taxCents).toBe(699);
+    expect(netCents).toBe(587);
+    expect(taxCents).toBe(112);
   });
 });

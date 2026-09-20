@@ -8,9 +8,24 @@ import type { Database } from "@/lib/supabase/types";
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
 
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  // Without these, createServerClient throws synchronously and takes down
+  // every request on this deployment (proxy runs before any page/error
+  // boundary). Fail soft instead: skip the session refresh so the app is
+  // at least reachable and the misconfiguration is visible in server logs
+  // rather than as a blanket 500 on every route.
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error(
+      "[proxy] Missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY — skipping session refresh. Set these in the deployment's environment variables.",
+    );
+    return response;
+  }
+
   const supabase = createServerClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         getAll() {

@@ -36,3 +36,17 @@ export function orderTotalCents(
 ): number {
   return sumCents(...lines.map(lineTotalCents), deliveryFeeCents);
 }
+
+// Sale prices are stored gross (inkl. MwSt.) throughout — see
+// docs/database.md. Invoices must show the net amount and tax amount
+// separately (§14 UStG), so this splits a gross amount back out using the
+// product's actual tax_rate_percent. Rounds the net amount down to the
+// nearest cent and derives tax as the remainder, so net + tax always
+// reconstructs the original gross exactly (no rounding drift on the total).
+export function splitGrossCents(
+  grossCents: number,
+  taxRatePercent: number,
+): { netCents: number; taxCents: number } {
+  const netCents = Math.floor((grossCents * 100) / (100 + taxRatePercent));
+  return { netCents, taxCents: grossCents - netCents };
+}
