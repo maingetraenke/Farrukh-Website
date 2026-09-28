@@ -64,6 +64,10 @@ export function SortimentContent({
     for (const category of categoryOrder) map.set(category, []);
     const query = search.trim().toLowerCase();
     for (const product of products) {
+<<<<<<< HEAD
+=======
+      
+>>>>>>> 9c117684e31f4d4cd2675b82abb40fb9ec0ba336
       const haystack = `${product.brand} ${product.variant ?? ""} ${product.name}`.toLowerCase();
       if (query && !haystack.includes(query)) continue;
       map.get(product.category)?.push(product);
