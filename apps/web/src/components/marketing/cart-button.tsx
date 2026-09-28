@@ -103,7 +103,7 @@ export function CartButton() {
 
           <SheetFooter>
             <div className="flex items-center justify-between text-sm font-medium">
-              <span className="text-muted-foreground">Kästen gesamt</span>
+              <span className="text-muted-foreground">Artikel gesamt</span>
               <span>{totalCases}</span>
             </div>
             <Button

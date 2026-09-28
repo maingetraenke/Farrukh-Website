@@ -13,6 +13,7 @@ import {
   formatGebinde,
   formatPriceCents,
   formatUnitPricePerLiter,
+  productTitle,
 } from "@/lib/domain/catalog";
 import type { Database, ProductCategory } from "@/lib/supabase/types";
 
@@ -38,10 +39,16 @@ const categoryOrder: ProductCategory[] = [
   "SONSTIGES",
 ];
 
-// Quick-jump chips — only the four categories that actually have stock.
-// Wein & Sekt (coming soon) and Sonstiges are still reachable by
-// scrolling, just not worth a dedicated chip.
-const jumpCategories: ProductCategory[] = ["WASSER", "SAFT_NEKTAR", "SOFTDRINKS", "BIER"];
+// Quick-jump chips — only the categories that actually have stock.
+// Sonstiges is still reachable by scrolling, just not worth a dedicated
+// chip.
+const jumpCategories: ProductCategory[] = [
+  "WASSER",
+  "SAFT_NEKTAR",
+  "SOFTDRINKS",
+  "BIER",
+  "WEIN_SEKT",
+];
 
 export function SortimentContent({
   products,
@@ -57,9 +64,6 @@ export function SortimentContent({
     for (const category of categoryOrder) map.set(category, []);
     const query = search.trim().toLowerCase();
     for (const product of products) {
-      // Wein & Sekt has no real products — its section is a fixed
-      // "coming soon" notice, not something a text search should hide.
-      if (product.category === "WEIN_SEKT") continue;
       const haystack = `${product.brand} ${product.variant ?? ""} ${product.name}`.toLowerCase();
       if (query && !haystack.includes(query)) continue;
       map.get(product.category)?.push(product);
@@ -112,8 +116,13 @@ export function SortimentContent({
           {categoryOrder.map((category) => {
             const items = byCategory.get(category);
             const isEmpty = !items || items.length === 0;
+            // "Coming soon" only while Wein & Sekt has no products at all —
+            // an empty result from a text search just hides the section.
             const showComingSoon =
-              isEmpty && category === "WEIN_SEKT" && weinSektComingSoon;
+              category === "WEIN_SEKT" &&
+              weinSektComingSoon &&
+              !search.trim() &&
+              !products.some((product) => product.category === "WEIN_SEKT");
             if (isEmpty && !showComingSoon) return null;
             const Icon = categoryIcons[category];
             return (
@@ -161,7 +170,7 @@ export function SortimentContent({
                         {product.image_url ? (
                           <Image
                             src={product.image_url}
-                            alt={product.brand}
+                            alt={productTitle(product)}
                             width={400}
                             height={160}
                             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
@@ -175,8 +184,7 @@ export function SortimentContent({
                         <CardContent className="flex flex-col gap-3">
                           <div className="flex flex-col">
                             <span className="font-semibold text-foreground">
-                              {product.brand}
-                              {product.variant ? ` ${product.variant}` : ""}
+                              {productTitle(product)}
                             </span>
                             <span className="text-muted-foreground text-xs">
                               {formatGebinde(product)}
@@ -215,7 +223,7 @@ export function SortimentContent({
                           {product.sale_price_cents != null ? (
                             <AddToCartButton
                               productId={product.id}
-                              name={`${product.brand}${product.variant ? ` ${product.variant}` : ""}`}
+                              name={productTitle(product)}
                               brand={product.brand}
                               gebinde={formatGebinde(product)}
                               salePriceCents={product.sale_price_cents}
@@ -224,7 +232,7 @@ export function SortimentContent({
                             />
                           ) : (
                             <RequestPriceButton
-                              name={`${product.brand}${product.variant ? ` ${product.variant}` : ""}`}
+                              name={productTitle(product)}
                               gebinde={formatGebinde(product)}
                             />
                           )}

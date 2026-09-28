@@ -186,7 +186,7 @@ export function WarenkorbContent() {
           ))}
           <div className="flex flex-col gap-1 px-1 text-sm text-foreground">
             <div className="flex items-center justify-between">
-              <span className="text-muted-foreground">Kästen gesamt</span>
+              <span className="text-muted-foreground">Artikel gesamt</span>
               <span className="font-medium">{totalCases}</span>
             </div>
             <div className="flex items-center justify-between">

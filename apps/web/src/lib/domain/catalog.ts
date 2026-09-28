@@ -19,11 +19,17 @@ export function formatGebinde(product: {
   bottle_material: BottleMaterial;
 }): string {
   const material = materialLabels[product.bottle_material];
+  // Einzelflaschen (e.g. Wein & Sekt, bottles_per_case = 1) read as
+  // "0,75L Flasche", not "1×0,75L Glas".
+  if (product.bottles_per_case === 1) {
+    return `${formatLiters(product.bottle_volume_ml)}L Flasche`;
+  }
   return `${product.bottles_per_case}×${formatLiters(product.bottle_volume_ml)}L ${material}`;
 }
 
-// Wein & Sekt is advertised (homepage tiles, footer, Sortiment page) but
-// has no products yet. Transitional switch, owner to decide finally:
+// Wein & Sekt is advertised (homepage tiles, footer, Sortiment page).
+// Real products are shown as soon as active ones exist; this switch only
+// controls what happens while the category is empty:
 //   true  (default) — keep the category visible everywhere, Sortiment
 //         shows a "Sortiment folgt in Kürze" placeholder instead of
 //         nothing/an empty gap.
@@ -40,6 +46,20 @@ export const categoryLabels: Record<string, string> = {
   SOFTDRINKS: "Erfrischungsgetränke",
   SONSTIGES: "Sonstiges",
 };
+
+// Customer-facing product title. Drinks are named "Brand Variant"
+// ("Gerolsteiner Medium"); wines are entered per bottle with the wine as
+// `name` ("Kerner") and a generic variant ("Einzelflasche"), so brand +
+// variant would make every wine of a Weingut look identical.
+export function productTitle(product: {
+  category: string;
+  brand: string;
+  variant: string | null;
+  name: string;
+}): string {
+  if (product.category === "WEIN_SEKT") return `${product.brand} ${product.name}`;
+  return `${product.brand}${product.variant ? ` ${product.variant}` : ""}`;
+}
 
 // 2199 -> "21,99 €". Sale prices are stored as exact gross (inkl. MwSt.)
 // integer cents, never float — see CLAUDE.md rule 9.

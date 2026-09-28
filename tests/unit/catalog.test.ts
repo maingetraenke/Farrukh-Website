@@ -3,6 +3,7 @@ import {
   formatGebinde,
   formatPriceCents,
   formatUnitPricePerLiter,
+  productTitle,
 } from "@/lib/domain/catalog";
 
 describe("formatGebinde", () => {
@@ -34,6 +35,36 @@ describe("formatGebinde", () => {
     expect(
       formatGebinde({ bottles_per_case: 12, bottle_volume_ml: 200, bottle_material: "KARTON" }),
     ).toBe("12×0,2L Karton");
+  });
+
+  it("formats a single wine bottle without a case count", () => {
+    expect(
+      formatGebinde({ bottles_per_case: 1, bottle_volume_ml: 750, bottle_material: "GLASS" }),
+    ).toBe("0,75L Flasche");
+  });
+});
+
+describe("productTitle", () => {
+  it("uses brand + variant for drinks", () => {
+    expect(
+      productTitle({
+        category: "WASSER",
+        brand: "Gerolsteiner",
+        variant: "Medium",
+        name: "Gerolsteiner Medium 12x0,75L Glas",
+      }),
+    ).toBe("Gerolsteiner Medium");
+  });
+
+  it("uses brand + name for wine, ignoring the generic variant", () => {
+    expect(
+      productTitle({
+        category: "WEIN_SEKT",
+        brand: "Weingut Eherieder Mühle",
+        variant: "Einzelflasche",
+        name: "Kerner",
+      }),
+    ).toBe("Weingut Eherieder Mühle Kerner");
   });
 });
 
