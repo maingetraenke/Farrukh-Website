@@ -43,6 +43,7 @@ begin
       ('Rhön', 'Medium', null, '/products/rhoen-medium.jpg'),
       ('Rhön', 'Naturell', null, '/products/rhoen-naturell.jpg'),
       ('Rhön', 'Sprudel', null, '/products/rhoen-original.jpg'),
+      ('Rhön', 'Sprudel Original', null, '/products/rhoen-original.jpg'),
       ('Rhön', 'Sprudel Sanft', null, '/products/rhoen-sanft.jpg'),
       ('Rhön', 'INDI Spritzig', null, '/products/rhoen-original.jpg'),
       ('Rhön', 'INDI Sanft', null, '/products/rhoen-sanft.jpg'),
